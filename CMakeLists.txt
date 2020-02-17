@@ -5,7 +5,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-project(attyscomm VERSION 2.0.1 LANGUAGES CXX)
+project(attyscomm VERSION 2.0.2 LANGUAGES CXX)
 include(GNUInstallDirs)
 add_subdirectory(test)
 add_subdirectory(examples)
@@ -69,8 +69,6 @@ if(UNIX)
 
   if(APPLE)
     target_link_libraries(attyscomm ${linked_ios_frameworks})
-    set_property (TARGET attyscomm APPEND_STRING PROPERTY 
-                  COMPILE_FLAGS "-fobjc-arc")
   endif(APPLE)
   
 endif(UNIX)
@@ -86,8 +84,6 @@ endif(WIN32)
 
 if(APPLE)
     target_link_libraries(attyscomm_static ${linked_ios_frameworks})
-    set_property (TARGET attyscomm_static APPEND_STRING PROPERTY 
-                  COMPILE_FLAGS "-fobjc-arc")
 endif(APPLE)
 
 target_include_directories(attyscomm_static PRIVATE attyscomm)

@@ -221,6 +221,7 @@ AttysScan::~AttysScan() {
 	if (!attysComm) return;
 	for (int devNo = 0; devNo < nAttysDevices; devNo++) {
 		if (attysComm[devNo]) {
+			attysComm[devNo]->quit();
 			delete attysComm[devNo];
 			attysComm[devNo] = NULL;
 		}
