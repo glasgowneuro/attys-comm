@@ -8,7 +8,7 @@ The library is cross platform: It's for Linux, Windows and Mac.
 
 ## Installation instructions
 
-### Linux and MacOS
+### Linux
 
 ```
 cmake .
@@ -16,8 +16,29 @@ make
 sudo make install
 ```
 
-This will generate: a dynamic library libattyscomm and a static
+This will generate: a dynamic library libattyscomm*.so and a static
 one called libattyscomm_static.a.
+
+
+### MacOS
+
+For pure commandline install:
+```
+cmake .
+```
+or if you want to debug/develop the library in Xcode:
+```
+cmake -G Xcode
+```
+then:
+```
+make
+make install
+```
+
+This will generate: a dynamic library libattyscomm.*dylib and a static
+one called libattyscomm_static.a.
+
 
 
 ### Windows:
