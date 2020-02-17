@@ -81,8 +81,6 @@ int AttysScan::scan(int maxAttysDevs) {
 			fprintf(stderr, "%s  %s", addr, name);
 			if (strstr(name, "GN-ATTYS") != 0) {
 				fprintf(stderr, "! Found one. Connecting. ");
-				// allocate a socket
-				int s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 				memset(&saddr, 0, sizeof(struct sockaddr_rc));
 				// set the connection parameters (who to connect to)
 				saddr.rc_family = AF_BLUETOOTH;

@@ -48,6 +48,8 @@ typedef float* sample_p;
 struct AttysCommMessage {
 	// provides error number and a text message about the error
 	virtual void hasMessage(int, const char*) = 0;
+	// empty destructor in case of a delete
+	virtual ~AttysCommMessage() {};
 };
 
 
