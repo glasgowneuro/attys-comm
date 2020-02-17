@@ -6,9 +6,7 @@ The library is cross platform: It's for Linux, Windows and Mac.
 
 ![alt tag](ecu_attys_daq_board.png)
 
-## C++
-
-The files are in the `cpp` subdirectory.
+## Installation instructions
 
 ### Linux and MacOS
 
@@ -18,11 +16,11 @@ make
 sudo make install
 ```
 
-This will generate: a dynamic library libattyscomm, a static
+This will generate: a dynamic library libattyscomm and a static
 one called libattyscomm_static.a.
 
 
-### Installation under Windows:
+### Windows:
 Under windows only the static library is generated which
 should be used for your code development.
 ```
@@ -30,7 +28,8 @@ cmake -G "Visual Studio 15 2017 Win64" .
 ```
 and then start Visual C++ and compile it.
 
-### Usage
+
+## Usage
 
 A small test program is in the `test` directory which scans
 for an Attys and then prints the incoming data to stdout.
