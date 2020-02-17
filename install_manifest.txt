@@ -1,0 +1,10 @@
+/usr/local/lib/libattyscomm.so.2.0.0
+/usr/local/lib/libattyscomm.so.1
+/usr/local/lib/libattyscomm.so
+/usr/local/include/attyscomm/base64.h
+/usr/local/include/AttysComm.h
+/usr/local/include/AttysScan.h
+/usr/local/lib/libattyscomm_static.a
+/usr/local/include/attyscomm/base64.h
+/usr/local/include/AttysComm.h
+/usr/local/include/AttysScan.h

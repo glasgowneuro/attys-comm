@@ -1,0 +1,86 @@
+========================
+Python API for the Attys
+========================
+
+Attys is a lightweight bluetooth DAQ box which can measure anything from temperature to ECG.
+
+http://www.attys.tech
+
+
+Required packages under Linux
+=============================
+
+For Ubuntu Linux install libbluetooth-dev::
+
+      sudo apt-get install libbluetooth-dev
+
+For other Linux flavours install them from souce:
+
+https://github.com/glasgowneuro/AttysComm/tree/master/cpp
+
+
+Quick start guide
+=================
+
+Here are the basic steps how to use the API::
+
+      # load the module
+      import pyattyscomm
+
+      # Gets the AttysScan class which scans for Attys via bluetooth
+      s = pyattyscomm.AttysScan()
+
+      # Scan for Attys
+      s.scan()
+
+      # get the 1st Attys
+      c = s.getAttysComm(0)
+
+      # if an attys has been found c points to it. Otherwise it's None.
+
+      # Start data acquisition in the background
+      c.start()
+
+      # Now we just read data at our convenience in a loop or timer or thread
+      # if data is available you can read it from the ringBuffer
+
+      while (not c.hasSampleAvilabale()):
+      	    # do something else or nothing
+
+      # getting a sample (array of all Attys channels)
+      sample = c.getSampleFromBuffer()
+
+      # do something with the sample
+      print(sample)
+
+      # rinse and repeat!
+
+
+API documentation
+==================
+
+Query it via the python help system::
+
+    import pyattyscomm
+    help(pyattyscomm.AttysScan)
+    help(pyattyscomm.AttysComm)
+
+
+The Python classes have been generated with SWIG. The header files AttysComm.h and AttysScan.h provide detailed info about the classes:
+
+https://github.com/glasgowneuro/AttysComm/tree/master/cpp
+
+
+
+
+
+
+
+
+Demos
+=====
+
+On github are two python demos: one which prints the
+ADC data to the screen and two demos which plots it.
+
+https://github.com/glasgowneuro/AttysComm/tree/master/demo
