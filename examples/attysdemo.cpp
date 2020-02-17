@@ -22,6 +22,7 @@ int main (int,char**)
 			printf("%f\t",values[i]);
 		}
 		printf("\n");
+		fflush(stdout);
 	}
 	return 0;
 }
