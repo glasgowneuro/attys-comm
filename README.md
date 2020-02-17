@@ -20,27 +20,6 @@ This will generate: a dynamic library libattyscomm*.so and a static
 one called libattyscomm_static.a.
 
 
-### MacOS
-
-For pure commandline install:
-```
-cmake .
-```
-or if you want to debug/develop the library in Xcode:
-```
-cmake -G Xcode
-```
-then:
-```
-make
-make install
-```
-
-This will generate: a dynamic library libattyscomm.*dylib and a static
-one called libattyscomm_static.a.
-
-
-
 ### Windows:
 Under windows only the static library is generated which
 should be used for your code development.
@@ -48,6 +27,25 @@ should be used for your code development.
 cmake -G "Visual Studio 15 2017 Win64" .
 ```
 and then start Visual C++ and compile it.
+
+
+### MacOS
+
+For pure commandline install:
+```
+cmake .
+make
+make install
+```
+This will generate: a dynamic library libattyscomm.*dylib and a static
+one called libattyscomm_static.a.
+
+If you want to debug/develop the library in Xcode:
+```
+cmake -G Xcode
+```
+
+Note the MacOS driver is beta at the moment.
 
 
 ## Usage
