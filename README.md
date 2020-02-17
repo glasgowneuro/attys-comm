@@ -44,37 +44,37 @@ int ret = attysScan.scan();
 
 2. Check the number of Attys detected
 ```
-attysScan.nAttysDevices
+attysScan.getNAttysDevices()
 ```
 
-3. If devices have been detected they show up as an array.
-`attysScan.attysComm[0,1,2,etc]` points to the AttysComm instances.
+3. If devices have been detected you can get them via
+`getAttysComm(0,1,2,etc)`.
 
 4. Set the parameters, for example:
 ```
-attysScan.attysComm[0]->setAdc_samplingrate_index(AttysComm::ADC_RATE_250HZ);
+attysScan.getAttysComm(0)->setAdc_samplingrate_index(AttysComm::ADC_RATE_250HZ);
 ```
 
 5. Register a callback (optional)
 ```
 attysCallback = new AttysCallback(this);
-attysScan.attysComm[0]->registerCallback(attysCallback);
+attysScan.getAttysComm(0)->registerCallback(attysCallback);
 ```
 You need to overload the virtual function of the callback in your program.
 
 6. Start data acquisition
 ```
-attysScan.attysComm[0]->start();
+attysScan.getAttysComm(0)->start();
 ```
 
 7. Check if ringbuffer contains data and wait till true
 ```
-attysScan.attysComm[n]->hasSampleAvilabale();
+attysScan.getAttysComm(n)->hasSampleAvilabale();
 ```
 
 8. Get samples from buffer
 ```
-float* values = attysScan.attysComm[n]->getSampleFromBuffer();
+float* values = attysScan.getAttysComm(n)->getSampleFromBuffer();
 ```
 
 9. go back to 7)
