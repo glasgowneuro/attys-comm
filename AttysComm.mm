@@ -215,14 +215,14 @@ void AttysComm::run() {
     _RPT0(0,"RFCOMM channel is open.\n");
 
     watchdogCounter = TIMEOUT_IN_SECS * getSamplingRateInHz();
-    std::thread watchdog(AttysComm::watchdogThread, this);
+    // std::thread watchdog(AttysComm::watchdogThread, this);
     
     doRun = 1;
     while (doRun) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
     }
     
-    watchdog.detach();
+    // watchdog.detach();
 
     _RPT0(0, "Closing channel.\n");
     [chan closeChannel];

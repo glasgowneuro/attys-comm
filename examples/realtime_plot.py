@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pyattyscomm
 
-# read from channel 7
-channel = pyattyscomm.AttysComm.INDEX_Analogue_channel_1
+# read from 2nd Analogue channel
+channel = pyattyscomm.AttysComm.INDEX_Analogue_channel_2
 
 s = pyattyscomm.AttysScan()
 s.scan()
