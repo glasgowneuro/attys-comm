@@ -45,12 +45,10 @@ If you want to debug/develop the library in Xcode:
 cmake -G Xcode
 ```
 
-Note the MacOS driver is beta at the moment.
-
 
 ## Usage
 
-A small test program is in the `test` directory which scans
+A small test program is in the `examples` directory which scans
 for an Attys and then prints the incoming data to stdout.
 Type `cmake .`, `make` and then `./attystest` to run it.
 
@@ -100,7 +98,7 @@ float* values = attysScan.getAttysComm(n)->getSampleFromBuffer();
 
 10. Ending the program:
 ```
-attysScan.attysComm[n]->quit();
+attysScan.getAttysComm(n)->quit();
 ```
 
 
@@ -110,7 +108,7 @@ This libary is fast and multi threaded. It performs
 the data acquisition in the background while python can then
 do the postprocessing.
 
-Pre-compiled packages for both Linux and Windows are available.
+Pre-compiled packages for Linux, Windows and MacOS are available.
 
 ### Linux
 
@@ -165,6 +163,31 @@ Install them with:
 ```
 python setup.py install
 ```
+
+
+### MacOS
+
+#### Python package (pip):
+
+```
+pip3 install pyattyscomm
+```
+
+#### From source
+
+You need to have swig-3.x installed for homebrew. Then run in the `cpp` directory:
+
+```
+cmake .
+make
+make install
+./setup.py install
+```
+
+and then you can load the module `pyattyscomm` system-wide!
+
+
+
 
 ### How to use
 
