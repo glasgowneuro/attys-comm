@@ -236,7 +236,7 @@ realtime_plot_demo.py
 ```
 
 
-![alt tag](pyattyscomm.png)
+![alt tag](examples/realtime_plot_screenshot.png)
 
 
 Enjoy!
