@@ -80,7 +80,7 @@ https://github.com/glasgowneuro/AttysComm/tree/master/cpp
 Demos
 =====
 
-On github are two python demos: one which prints the
-ADC data to the screen and two demos which plots it.
+On github are two python examples which print the
+ADC data to the screen and plots it.
 
-https://github.com/glasgowneuro/AttysComm/tree/master/demo
+https://github.com/glasgowneuro/attys-comm/tree/master/examples
