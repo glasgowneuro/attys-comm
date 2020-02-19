@@ -211,7 +211,6 @@ void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 			for (int k = 0; k < NCHANNELS; k++) {
 				ringBuffer[inPtr][k] = sample[k];
 			}
-			ringBuffer[inPtr][NCHANNELS] = sampleNumber;
 			if (callbackInterface) {
 				float ts = (float)sampleNumber / (float)getSamplingRateInHz();
 				callbackInterface->hasSample(ts, sample);
