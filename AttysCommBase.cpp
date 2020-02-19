@@ -5,28 +5,21 @@
 AttysCommBase::AttysCommBase()
 {
 	mainThread = NULL;
-	adcMuxRegister = new int[2];
 	adcMuxRegister[0] = 0;
 	adcMuxRegister[1] = 0;
-	adcGainRegister = new int[2];
 	adcGainRegister[0] = 0;
 	adcGainRegister[1] = 0;
-	adcCurrNegOn = new int[2];
 	adcCurrNegOn[0] = 0;
 	adcCurrNegOn[1] = 0;
-	adcCurrPosOn = new int[2];
 	adcCurrPosOn[0] = 0;
 	adcCurrNegOn[1] = 0;
 
-	ringBuffer = new float*[nMem];
 	for (int i = 0; i < nMem; i++) {
-		ringBuffer[i] = new float[NCHANNELS];
+		for (int j = 0; j < NCHANNELS; j++) {
+			ringBuffer[i][j] = 0;
+		}
 	}
 
-	data = new long[NCHANNELS];
-	raw = new char[256];
-	sample = new float[NCHANNELS];
-	inbuffer = new char[100000];
 	strcpy(inbuffer, "");
 	doRun = 0;
 	inPtr = 0;
@@ -54,18 +47,6 @@ void AttysCommBase::quit() {
 
 AttysCommBase::~AttysCommBase() {
 	quit();
-	delete[] adcMuxRegister;
-	delete[] adcGainRegister;
-	delete[] adcCurrNegOn;
-	delete[] adcCurrPosOn;
-	for (int i = 0; i < nMem; i++) {
-		delete[] ringBuffer[i];
-	}
-	delete[] ringBuffer;
-	delete[] data;
-	delete[] raw;
-	delete[] sample;
-	delete[] inbuffer;
 }
 
 

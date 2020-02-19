@@ -7,6 +7,7 @@
 #include <string.h>
 #include <thread>
 #include <math.h>
+#include <mutex>
 
 #include "attyscomm/base64.h"
 
@@ -64,6 +65,10 @@ public:
 	virtual ~AttysCommBase();
 
 	static const int NCHANNELS = 10;
+
+	// number of entries in the ringbuffer
+	// buffer for 10secs at 1kHz
+	static const int nMem = 1000 * 10;
 
 	// index numbers of the channels returned in the data array
 	static const int INDEX_Acceleration_X = 0;
@@ -402,25 +407,22 @@ protected:
 	// from here it's private
 	AttysCommListener* callbackInterface = NULL;
 	int doRun = 0;
-	// ringbuffer
-	float** ringBuffer;
-	// number of entries in the ringbuffer
-	// buffer for 10secs at 1kHz
-	const int nMem = 1000 * 10;
 	int inPtr = 0;
 	int outPtr = 0;
 	int isConnected = 0;
-	int* adcMuxRegister;
-	int* adcGainRegister;
-	int* adcCurrNegOn;
-	int* adcCurrPosOn;
+	// ringbuffer
+	float ringBuffer[nMem][NCHANNELS];
+	long data[NCHANNELS];
+	char raw[1024];
+	float sample[NCHANNELS];
+	char inbuffer[65536];
+	int adcMuxRegister[2];
+	int adcGainRegister[2];
+	int adcCurrNegOn[2];
+	int adcCurrPosOn[2];
 	int expectedTimestamp = 0;
 	int correctTimestampDifference = 0;
 	int connectionEstablished;
-	long* data;
-	char* raw;
-	float* sample;
-	char* inbuffer;
 	int isCharging = 0;
 	int watchdogCounter = 0;
 	int initialising = 1;
