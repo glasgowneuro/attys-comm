@@ -43,6 +43,7 @@ void AttysComm::start() {
 		return;
 	}
 	mainThread = new std::thread(AttysCommBase::execMainThread, this);
+	AttysCommBase::start();
 }
 
 
@@ -208,7 +209,6 @@ void AttysComm::receptionTimeout() {
 	if (attysCommMessage) {
 		attysCommMessage->hasMessage(MESSAGE_RECONNECTED, "reconnected to Attys");
 	}
+	correctSampleNumberAfterTimeout();
 	_RPT0(0, "Reconnected.\n");
 }
-
-

@@ -33,7 +33,6 @@ AttysCommBase::AttysCommBase()
 	outPtr = 0;
 	unregisterCallback();
 	adc_rate_index = ADC_DEFAULT_RATE;
-	timestamp = 0;
 	adc0_gain_index = ADC_GAIN_1;
 	adc0_mux_index = ADC_MUX_NORMAL;
 	adc1_gain_index = ADC_GAIN_1;
@@ -145,6 +144,9 @@ void AttysCommBase::sendInitCommandsToAttys() {
 
 void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 	watchdogCounter = TIMEOUT_IN_SECS;
+	if (0 == start_time) {
+		start_time = time(NULL);
+	}
 	int nTrans = 0;
 	char* lf = nullptr;
 	strcat(inbuffer, recvbuffer);
@@ -228,10 +230,11 @@ void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 			for (int k = 0; k < NCHANNELS; k++) {
 				ringBuffer[inPtr][k] = sample[k];
 			}
+			ringBuffer[inPtr][NCHANNELS] = sampleNumber;
 			if (callbackInterface) {
-				callbackInterface->hasSample((float)timestamp, sample);
+				float ts = (float)sampleNumber / (float)getSamplingRateInHz();
+				callbackInterface->hasSample(ts, sample);
 			}
-			timestamp = timestamp + 1.0 / getSamplingRateInHz();
 			sampleNumber++;
 			inPtr++;
 			if (inPtr == nMem) {
@@ -244,4 +247,11 @@ void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 		memmove(inbuffer, lf, rem);
 	}
 
+}
+
+
+void AttysCommBase::correctSampleNumberAfterTimeout() {
+	if (start_time > 0) {
+		sampleNumber = (time(NULL) - start_time) * getSamplingRateInHz();
+	}
 }

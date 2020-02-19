@@ -17,7 +17,7 @@
 	  return NULL;
   }
   $result = PyList_New(8);
-  for (i = 0; i < 8; i++) {
+  for (i = 0; i < 10; i++) {
     PyObject *o = PyFloat_FromDouble((double) $1[i]);
     PyList_SetItem($result,i,o);
   }

@@ -241,7 +241,7 @@ void AttysComm::receptionTimeout() {
     initialising = 1;
     while (tryToConnect()) {
         _RPT0(0, "Reconnect failed. Sleeping for 1 sec.\n");
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         connectError = 0;
     }
     if (!doRun) {
@@ -253,6 +253,7 @@ void AttysComm::receptionTimeout() {
         attysCommMessage->hasMessage(MESSAGE_RECONNECTED, "reconnected to Attys");
     }
     _RPT0(0, "Reconnected.\n");
+    correctSampleNumberAfterTimeout();
 }
 
 

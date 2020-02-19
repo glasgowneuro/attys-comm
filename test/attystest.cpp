@@ -2,26 +2,42 @@
 #include "AttysComm.h"
 #include "AttysScan.h"
 
-int main (int,char**)
-{
+
+struct MySample : public AttysCommListener {
+	virtual void hasSample(float t, float *values) {
+		// print it to stdout
+		printf("%f\t",t);
+		for(int i = 0; i < AttysCommBase::NCHANNELS; i++) {
+			printf("%f\t",values[i]);
+		}
+		printf("\n");
+	}
+};
+
+
+struct MyMessage : public AttysCommMessage {
+	virtual void hasMessage(int, const char* s) {
+		printf("Message = %s\n",s);
+	}
+};
+
+
+
+
+int main (int,char**) {
+	MySample mysample;
+	MyMessage mymessage;
 	// scan for Attys
 	attysScan.scan();
 	if (attysScan.nAttysDevices < 1) {
 		printf("No devices found.\n");
 		return 0;
 	}
+	attysScan.attysComm[0]->registerCallback(&mysample);
+	attysScan.attysComm[0]->registerMessageCallback(&mymessage);
 	// start the data acquisition in the background
 	attysScan.attysComm[0]->start();
-	while (1) {
-		// wait for a sample
-		while (!(attysScan.attysComm[0]->hasSampleAvilabale()));
-		// get the sample from the buffer
-		float* values = attysScan.attysComm[0]->getSampleFromBuffer();
-		// print it to stdout
-		for(int i = 0; i < attysScan.attysComm[0]->NCHANNELS; i++) {
-			printf("%f\t",values[i]);
-		}
-		printf("\n");
-	}
+	getchar();
+	attysScan.attysComm[0]->quit();
 	return 0;
 }

@@ -5,7 +5,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <string.h>
-#include <thread>   
+#include <thread>
+#include <math.h>
 
 #include "attyscomm/base64.h"
 
@@ -29,10 +30,10 @@
  * callback when a sample has arrived
  **/
 struct AttysCommListener {
+	// provides timestamp, array of all channels
+	virtual void hasSample(float, float *) = 0;
 	// empty destructor in case of a delete
 	virtual ~AttysCommListener() {};
-	// provides timestamp,array of all channels
-	virtual void hasSample(float, float *) = 0;
 };
 
 
@@ -284,28 +285,8 @@ public:
 
 
 	////////////////////////////////////////////////
-	// timestamp stuff as double
-	// note this might drift in the long run
-	void setTimestamp(double ts) {
-		timestamp = ts;
-	}
-
-	double getTimestamp() {
-		return timestamp;
-	}
-
-
-	////////////////////////////////////////////////
 	// sample counter
-	long sampleNumber = 0;
-
-	long getSampleNumber() {
-		return sampleNumber;
-	}
-
-	void setSampleNumber(long sn) {
-		sampleNumber = sn;
-	}
+	unsigned long sampleNumber = 0;
 
 
 	/////////////////////////////////////////////////
@@ -339,7 +320,10 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// starts the data acquisition by starting the main thread
 	// and sending possibly init commands.
-	virtual void start() = 0;
+	virtual void start() {
+	       	start_time = 0;
+		sampleNumber = 0;
+	};
 
 	//////////////////////////////////////////////////////////////////////////
 	// closes socket safely
@@ -432,7 +416,6 @@ protected:
 	int* adcCurrPosOn;
 	int expectedTimestamp = 0;
 	int correctTimestampDifference = 0;
-	double timestamp = 0.0; // in secs
 	int connectionEstablished;
 	long* data;
 	char* raw;
@@ -493,6 +476,9 @@ protected:
 
 	virtual void receptionTimeout() = 0;
 
+	void correctSampleNumberAfterTimeout();
+
+	long unsigned int start_time = 0;
 public:
 	void processRawAttysData(const char* data);
 	int isInitialising() {
