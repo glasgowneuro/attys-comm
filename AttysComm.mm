@@ -38,7 +38,7 @@
         if (delegateCPP->attysCommMessage) {
             delegateCPP->attysCommMessage->hasMessage(delegateCPP->MESSAGE_RECEIVING_DATA, "Connected");
         }
-}
+    }
     
 }
 
@@ -64,8 +64,13 @@
 
 
 void AttysComm::getReceivedData(char* buf, int maxlen) {
-    while ((!isConnected) && (doRun)) {
+    for(int i=0; (i < 100) && ((!isConnected) && (doRun)); i++) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    if (!doRun) return;
+    if (!isConnected) {
+        connectError = 1;
+        return;
     }
     if (recBuffer) {
         strncpy(buf,recBuffer,maxlen);
@@ -84,23 +89,29 @@ int AttysComm::sendBT(const char* dataToSend)
 }
 
 int AttysComm::tryToConnect() {
-    doRun = 0;
     isConnected = 0;
+    connectError = 0;
     _RPT0(0,"Trying to connect.\n");
     if (mainThread) {
+        doRun = 0;
         _RPT0(0,"Waiting for the thread to terminate.\n");
         mainThread->join();
         _RPT0(0,"Deleting thread.\n");
         delete mainThread;
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     _RPT0(0,"Starting main thread.\n");
     doRun = 1;
     mainThread = new std::thread(AttysCommBase::execMainThread, this);
-    while ((!isConnected) && (doRun)) {
+    for(int i =0; (i < 100) && ((!isConnected) && (doRun)); i++) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        if (connectError) return -1;
+        if (connectError) {
+            doRun = 0;
+            return -1;
+        }
     }
-    if ((1 == doRun) && (!connectError) && isConnected) {
+    if (!doRun) return -1;
+    if ((!connectError) && isConnected) {
         return 0;
     } else {
         return -1;
@@ -117,7 +128,10 @@ void AttysComm::connect() {
 void AttysComm::closeSocket() {
     if (!rfcommchannel) return;
     IOBluetoothRFCOMMChannel *chan = (__bridge IOBluetoothRFCOMMChannel*) rfcommchannel;
-    [chan closeChannel];
+    if (chan) {
+        [chan closeChannel];
+        rfcommchannel = NULL;
+    }
     _RPT0(0,"closing");
 }
 
@@ -207,28 +221,32 @@ void AttysComm::run() {
         _RPT0(0,"Fatal - could not open the rfcomm.\n");
         connectError = 1;
         doRun = 0;
+        if (chan) {
+            [chan setDelegate:nil];
+            [chan closeChannel];
+        }
         return;
     }
     
     rfcommchannel = (__bridge void*) chan;
     
     _RPT0(0,"RFCOMM channel is open.\n");
-
-    watchdogCounter = TIMEOUT_IN_SECS * getSamplingRateInHz();
-    // std::thread watchdog(AttysComm::watchdogThread, this);
+    
+    watchdogCounter = 2 * TIMEOUT_IN_SECS * getSamplingRateInHz();
+    std::thread watchdog(AttysComm::watchdogThread, this);
     
     doRun = 1;
     while (doRun) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
     }
     
-    // watchdog.detach();
-
+    watchdog.detach();
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    
     _RPT0(0, "Closing channel.\n");
+    [chan setDelegate:nil];
     [chan closeChannel];
-    _RPT0(0, "Closing connection.\n");
-    [device closeConnection];
-    _RPT0(0, "Connection closed.\n");
+    _RPT0(0, "Channel closed.\n");
 }
 
 
@@ -238,22 +256,6 @@ void AttysComm::receptionTimeout() {
     if (attysCommMessage) {
         attysCommMessage->hasMessage(MESSAGE_TIMEOUT, "reception timeout to Attys");
     }
-    initialising = 1;
-    while (tryToConnect()) {
-        _RPT0(0, "Reconnect failed. Sleeping for 1 sec.\n");
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        connectError = 0;
-    }
-    if (!doRun) {
-        return;
-    }
-    sendInit();
-    initialising = 0;
-    if (attysCommMessage) {
-        attysCommMessage->hasMessage(MESSAGE_RECONNECTED, "reconnected to Attys");
-    }
-    _RPT0(0, "Reconnected.\n");
-    correctSampleNumberAfterTimeout();
 }
 
 
