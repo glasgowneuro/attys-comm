@@ -99,9 +99,9 @@ public:
 
 public:
 	// returns an array of 14 bytes
-    unsigned char* getBluetoothBinaryAdress();
+	unsigned char* getBluetoothBinaryAdress();
 
-    void getBluetoothAdressString(char* s);
+	void getBluetoothAdressString(char* s);
 
 private:
 	///////////////////////////////////////////////////////
