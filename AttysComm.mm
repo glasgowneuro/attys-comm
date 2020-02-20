@@ -35,6 +35,7 @@
         _RPT0(0,"Connected.\n");
         delegateCPP->setConnected(1);
         delegateCPP->connectError = 0;
+	delegateCPP->reconnect = 0;
         if (delegateCPP->attysCommMessage) {
             delegateCPP->attysCommMessage->hasMessage(delegateCPP->MESSAGE_RECEIVING_DATA, "Connected");
         }
@@ -203,7 +204,6 @@ void AttysComm::run() {
         doRun = 0;
         return;
     }
-    UInt8 rfcommChannelID;
     _RPT0(0,"Getting channel ID.\n");
     if ( [sppServiceRecord getRFCOMMChannelID:&rfcommChannelID] != kIOReturnSuccess ) {
         _RPT0(0,"Could not get channel ID.\n");
@@ -212,12 +212,13 @@ void AttysComm::run() {
         return;
     }
     
-    AsyncCommDelegate* asyncCommDelegate = [[AsyncCommDelegate alloc] init];
-    asyncCommDelegate->delegateCPP = this;
-    
+    AsyncCommDelegate* rfCommDelegate = [[AsyncCommDelegate alloc] init];
+    rfCommDelegate->delegateCPP = this;
+    asyncCommDelegate = (__bridge void*) rfCommDelegate;
+
     IOBluetoothRFCOMMChannel *chan = NULL;
     _RPT0(0,"Opening RFCOMM channel!\n");
-    if ( [device openRFCOMMChannelAsync:&chan withChannelID:rfcommChannelID delegate:asyncCommDelegate] != kIOReturnSuccess ) {
+    if ( [device openRFCOMMChannelAsync:&chan withChannelID:rfcommChannelID delegate:rfCommDelegate] != kIOReturnSuccess ) {
         _RPT0(0,"Fatal - could not open the rfcomm.\n");
         connectError = 1;
         doRun = 0;
@@ -247,15 +248,36 @@ void AttysComm::run() {
     [chan setDelegate:nil];
     [chan closeChannel];
     _RPT0(0, "Channel closed.\n");
+    asyncCommDelegate = NULL;
 }
 
 
 
 void AttysComm::receptionTimeout() {
+    if (reconnect) return;
     _RPT0(0, "Timeout.\n");
     if (attysCommMessage) {
         attysCommMessage->hasMessage(MESSAGE_TIMEOUT, "reception timeout to Attys");
     }
+    IOBluetoothDevice *device = (__bridge IOBluetoothDevice *)btAddr;
+    IOBluetoothRFCOMMChannel* chan = (__bridge IOBluetoothRFCOMMChannel*)rfcommchannel;
+    if (!asyncCommDelegate) {
+	fprintf(stderr,"delegate null!\n");
+	return;
+    }
+    [chan closeChannel];
+    if ( [device openRFCOMMChannelAsync:&chan withChannelID:rfcommChannelID delegate:((__bridge AsyncCommDelegate*)asyncCommDelegate)] != kIOReturnSuccess ) {
+        _RPT0(0,"Fatal - could not open the rfcomm.\n");
+        return;
+    }
+    rfcommchannel = (__bridge void*) chan;
+    reconnect = 1;
+    while (doRun & reconnect) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    sendInit();
+    correctSampleNumberAfterTimeout();
+    _RPT0(0, "Reconnected.\n");
 }
 
 

@@ -133,13 +133,16 @@ private:
 private:
     int sendBT(const char* dataToSend);
 	void* rfcommDevice = NULL;
-	void *rfcommchannel = NULL;
+	void* rfcommchannel = NULL;
+	void* asyncCommDelegate = NULL;
 	AttysComm* delegateCPP = NULL;
+	unsigned char rfcommChannelID;
 	int tryToConnect();
 public:
 	char* recBuffer = NULL;
 	void getReceivedData(char* buf, int maxlen);
 	int connectError = 0;
+	int reconnect = 0;
 #endif
 
 
