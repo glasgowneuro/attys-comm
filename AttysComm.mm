@@ -46,12 +46,14 @@
 -(void)rfcommChannelData:(IOBluetoothRFCOMMChannel *)rfcommChannel data:(void *)dataPointer length:(size_t)dataLength
 {
     if (delegateCPP->isInitialising()) {
+        delegateCPP->cmdMtx.lock();
         if (delegateCPP->recBuffer) {
             delete delegateCPP->recBuffer;
         }
         delegateCPP->recBuffer = new char[dataLength+1];
         strncpy(delegateCPP->recBuffer,(char*)dataPointer,dataLength);
         delegateCPP->recBuffer[dataLength] = 0;
+        delegateCPP->cmdMtx.unlock();
     } else {
         char tmp[dataLength+1];
         strncpy(tmp,(char*)dataPointer,dataLength);
@@ -73,6 +75,7 @@ void AttysComm::getReceivedData(char* buf, int maxlen) {
         connectError = 1;
         return;
     }
+    cmdMtx.lock();
     if (recBuffer) {
         strncpy(buf,recBuffer,maxlen);
         delete recBuffer;
@@ -81,6 +84,7 @@ void AttysComm::getReceivedData(char* buf, int maxlen) {
     } else {
         strncpy(buf,"",maxlen);
     }
+    cmdMtx.unlock();
 }
 
 

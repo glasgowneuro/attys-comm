@@ -143,6 +143,7 @@ public:
 	void getReceivedData(char* buf, int maxlen);
 	int connectError = 0;
 	int reconnect = 0;
+    std::mutex cmdMtx;
 #endif
 
 
