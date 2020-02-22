@@ -35,7 +35,7 @@ elif platform == "win32":
 elif platform == "darwin":
 	attyscomm_module = Extension('_pyattyscomm',
 							sources=['pyattyscomm.i'],
-							extra_compile_args=['-D__APPLE__','-std=c++11','-DSOCKET=int'],
+							extra_compile_args=['-D__APPLE__','-std=c++11'],
 							extra_link_args=[os.getcwd()+'/libattyscomm_static.a',
                                                                          '-framework','CoreBluetooth',
                                                                          '-framework','IOBluetooth',
