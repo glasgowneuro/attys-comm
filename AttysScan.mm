@@ -36,11 +36,11 @@ int AttysScan::scan(int maxAttysDevs) {
         throw "Error - no device has been paired.";
     }
     
-    _RPT1(0,"We have %lu paired device(s).\n",(unsigned long)deviceArray.count);
+    _RPT1(0,"We have %lu paired device(s).\n",(unsigned long)[deviceArray count]);
     
     // let's probe how many we have
     nAttysDevices = 0;
-    for (int i = 0; (i < deviceArray.count) && (i < maxAttysDevs); i++) {
+    for (int i = 0; (i < [deviceArray count]) && (i < maxAttysDevs); i++) {
         IOBluetoothDevice *device = [deviceArray objectAtIndex:i];
         _RPT1(0,"device name = %s ",[device.name UTF8String]);
         char name[256];
@@ -53,11 +53,20 @@ int AttysScan::scan(int maxAttysDevs) {
                 break;
             }
             try {
+	    	if (statusCallback) {
+			char tmp[256];
+			sprintf(tmp,"connecting to %s",name);
+			statusCallback->message(SCAN_CONNECTING, tmp);
+		}
                 attysComm[nAttysDevices]->connect();
                 strncpy(attysName[nAttysDevices], name, sizeof(name));
                 nAttysDevices++;
                 _RPT0(0, "\n");
-                break;
+	    	if (statusCallback) {
+			char tmp[256];
+			sprintf(tmp,"connected to %s",name);
+			statusCallback->message(SCAN_CONNECTED, tmp);
+		}
             }
             catch (const char *msg) {
                 if (statusCallback) {

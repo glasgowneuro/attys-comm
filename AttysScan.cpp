@@ -92,10 +92,20 @@ int AttysScan::scan(int maxAttysDevs) {
 					break;
 				}
 				try {
+					if (statusCallback) {
+						char tmp[256];
+						sprintf(tmp,"connecting to %s",name);
+						statusCallback->message(SCAN_CONNECTING, tmp);
+					}
 					attysComm[nAttysDevices]->connect();
 					strncpy(attysName[nAttysDevices], name, sizeof(name));
 					nAttysDevices++;
 					fprintf(stderr, " Connected.\n");
+					if (statusCallback) {
+						char tmp[256];
+						sprintf(tmp,"connecting to %s",name);
+						statusCallback->message(SCAN_CONNECTED, tmp);
+					}
 					break;
 				}
 				catch (const char *msg) {
