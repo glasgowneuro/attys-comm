@@ -4,7 +4,7 @@
 
 
 struct MySample : public AttysCommListener {
-	virtual void hasSample(float t, float *values) {
+	virtual void hasSample(double t, float *values) {
 		// print it to stdout
 		printf("%f\t",t);
 		for(int i = 0; i < AttysCommBase::NCHANNELS; i++) {

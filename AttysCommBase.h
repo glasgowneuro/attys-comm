@@ -32,7 +32,7 @@
  **/
 struct AttysCommListener {
 	// provides timestamp, array of all channels
-	virtual void hasSample(float, float *) = 0;
+	virtual void hasSample(double, float *) = 0;
 	// empty destructor in case of a delete
 	virtual ~AttysCommListener() {};
 };

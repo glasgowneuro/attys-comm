@@ -126,7 +126,7 @@ void AttysCommBase::sendInitCommandsToAttys() {
 void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 	watchdogCounter = TIMEOUT_IN_SECS;
 	if (0 == start_time) {
-		start_time = time(NULL);
+		start_time = (unsigned long)time(NULL);
 	}
 	int nTrans = 0;
 	char* lf = nullptr;
@@ -212,7 +212,7 @@ void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 				ringBuffer[inPtr][k] = sample[k];
 			}
 			if (callbackInterface) {
-				float ts = (float)sampleNumber / (float)getSamplingRateInHz();
+				double ts = (double)sampleNumber / (double)getSamplingRateInHz();
 				callbackInterface->hasSample(ts, sample);
 			}
 			sampleNumber++;
@@ -232,6 +232,6 @@ void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 
 void AttysCommBase::correctSampleNumberAfterTimeout() {
 	if (start_time > 0) {
-		sampleNumber = (time(NULL) - start_time) * getSamplingRateInHz();
+		sampleNumber = (((unsigned long)time(NULL)) - start_time) * getSamplingRateInHz();
 	}
 }
