@@ -19,12 +19,6 @@ class AttysScan;
 extern AttysScan attysScan;
 
 
-/**
- * Max number of Attys Devices
- **/
-#define MAX_ATTYS_DEVS 4
-
-
 // callback which reports the status of the scanner
 struct AttysScanListener {
 	virtual ~AttysScanListener() {};
@@ -37,12 +31,12 @@ class AttysScan {
 public:
 	~AttysScan();
 
-/**
- * Scans for all attys devices and fills the global
- * variables above
- * returns 0 on success
- **/
-	int scan(int maxAttys = MAX_ATTYS_DEVS);
+	/**
+	* Scans for the specified number of devices and connects to them.
+	* By default only for one Attys.
+	* returns 0 on success
+	**/
+	int scan(int maxAttys = 1);
 
 	static const int SCAN_CONNECTED = 0;
 	static const int SCAN_SEARCHING = 1;
@@ -50,6 +44,11 @@ public:
 	static const int SCAN_SOCKETERR = 3;
 	static const int SCAN_CONNECTING = 4;
 	static const int SCAN_CONNECTERR = 5;
+
+	/**
+	* Max number of Attys Devices
+	**/
+	static const int MAX_ATTYS_DEVS = 4;
 
 	/**
 	* Register callback which reports the scanning progress for
