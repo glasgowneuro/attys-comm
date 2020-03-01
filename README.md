@@ -233,6 +233,7 @@ There are demo programs which show you how to read/plot data with pyattyscomm:
 ```
 readdata_demo.py
 realtime_plot_demo.py
+realtime_two_channel_plot.py
 ```
 
 
