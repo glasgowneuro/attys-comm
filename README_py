@@ -16,7 +16,7 @@ For Ubuntu Linux install libbluetooth-dev::
 
 For other Linux flavours install them from souce:
 
-https://github.com/glasgowneuro/AttysComm/tree/master/cpp
+https://github.com/glasgowneuro/attys-comm
 
 
 Quick start guide
@@ -68,7 +68,7 @@ Query it via the python help system::
 
 The Python classes have been generated with SWIG. The header files AttysComm.h and AttysScan.h provide detailed info about the classes:
 
-https://github.com/glasgowneuro/AttysComm/tree/master/cpp
+https://github.com/glasgowneuro/attys-comm
 
 
 
@@ -83,4 +83,4 @@ Demos
 On github are two python examples which print the
 ADC data to the screen and plots it.
 
-https://github.com/glasgowneuro/attys-comm/tree/master/examples
+https://github.com/glasgowneuro/attys-python-examples

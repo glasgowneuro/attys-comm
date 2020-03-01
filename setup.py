@@ -45,10 +45,10 @@ elif platform == "darwin":
 
 						   
 setup (name = 'pyattyscomm',
-       version = '2.0.7.0',
+       version = '2.0.8.0',
        author      = "Bernd Porr",
        author_email = "bernd@glasgowneuro.tech",
-       url = "https://github.com/glasgowneuro/AttysComm",
+       url = "https://github.com/glasgowneuro/attys-comm",
        description = 'API for the Attys DAQ box (www.attys.tech)',
        long_description=read('README_py'),
        ext_modules = [attyscomm_module],
