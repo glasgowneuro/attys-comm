@@ -1,6 +1,6 @@
 # AttysCOMM
 
-The C++ & Python API for the Attys: http://www.attys.tech
+The C++ & Python API for the Attys bluetooth data acquisition board: http://www.attys.tech
 
 The library is cross platform: It's for Linux, Windows and Mac.
 
@@ -126,7 +126,7 @@ pip3 install pyattyscomm
 
 #### From source
 
-You need to have swig-3.x installed. Then run in the `cpp` directory:
+You need to have swig-3.x installed. Then run:
 
 ```
 cmake .
@@ -175,7 +175,7 @@ pip3 install pyattyscomm
 
 #### From source
 
-You need to have swig-3.x installed for homebrew. Then run in the `cpp` directory:
+You need to have swig-3.x installed for homebrew. Then run:
 
 ```
 cmake .
