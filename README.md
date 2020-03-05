@@ -230,16 +230,10 @@ while (not c.hasSampleAvilabale()):
     print(sample)
 ```
 
-### Demo programs
+### Example programs
 
-There are demo programs which show you how to read/plot data with pyattyscomm:
-
-```
-readdata_demo.py
-realtime_plot_demo.py
-realtime_two_channel_plot.py
-```
-
+Examples programs are in the `examples` folder and in this 
+![gitub repo](https://github.com/glasgowneuro/attys-python-examples).
 
 ![alt tag](realtime_plot_screenshot.png)
 
