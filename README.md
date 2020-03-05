@@ -241,7 +241,7 @@ realtime_two_channel_plot.py
 ```
 
 
-![alt tag](examples/realtime_plot_screenshot.png)
+![alt tag](realtime_plot_screenshot.png)
 
 
 Enjoy!
