@@ -673,12 +673,7 @@ protected:
 	int watchdogCounter = 0;
 	int initialising = 1;
 	unsigned long sampleNumber = 0;
-	AttysCommMessage* attysCommMessage = NULL;
 	std::thread* mainThread = NULL;
-
-	void setConnected(int c) {
-		isConnected = c;
-	}
 
 	static void execMainThread(AttysCommBase *thr) {
 		thr->run();
@@ -734,11 +729,20 @@ protected:
 
 	long unsigned int start_time = 0;
 public:
+	// these need to be public becaus they are called from objC but
+	// should be be touched.
+	
 	void processRawAttysData(const char* data);
+	
 	int isInitialising() {
 		return initialising;
 	}
 
+	void setConnected(int c) {
+		isConnected = c;
+	}
+
+	AttysCommMessage* attysCommMessage = NULL;
 };
 
 #endif
