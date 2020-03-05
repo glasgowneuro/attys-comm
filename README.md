@@ -233,7 +233,7 @@ while (not c.hasSampleAvilabale()):
 ### Example programs
 
 Examples programs are in the `examples` folder and in this 
-![gitub repo](https://github.com/glasgowneuro/attys-python-examples).
+![github repo](https://github.com/glasgowneuro/attys-python-examples).
 
 ![alt tag](realtime_plot_screenshot.png)
 
