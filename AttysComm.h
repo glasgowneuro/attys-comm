@@ -56,11 +56,21 @@ class AttysComm;
 
 #pragma once
 
+/**
+ * AttysComm class which contains the
+ * device specific definitions and
+ * implements the abstract classes of
+ * AttysCommBase. See AttysCommBase
+ * for the definitions there.
+ **/
 class AttysComm : public AttysCommBase
 {
 public:
-	/////////////////////////////////////////////////
-	// Constructor: takes the bluetooth device as an argument
+/**
+ * Constructor: Win/Linux: takes the bluetooth device structure
+ * and its length as an argument. For Mac: just a pointer to the
+ * device.
+ **/
 	// it then tries to connect to the Attys
 	AttysComm(void *_btAddr = NULL, int _btAddrLen = 0) : AttysCommBase() {
 		if (_btAddrLen > 0) {
