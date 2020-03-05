@@ -234,7 +234,7 @@ Attributes
 * `CHANNEL_SHORT_DESCRIPTION` : `const std::string`  
     Short descriptions of the channels in text form  
 
-* `CHANNEL_UNITS` : `const std::string`  
+* `CHANNEL_UNITS` : `std::string const`  
     Units of the channels  
 
 * `ADC_SAMPLINGRATE` : `const int`  
@@ -254,6 +254,8 @@ Attributes
 
 * `MAG_FULL_SCALE` : `const float`  
     Full scale range of the magnetometer in Tesla  
+
+* `attysCommMessage` : `AttysCommMessage *`  
 
 C++ includes: AttysCommBase.h
 ";
@@ -444,6 +446,10 @@ returns the Mac address as a string
 
 %feature("docstring") AttysCommBase::isInitialising "
 `isInitialising() -> int`  
+";
+
+%feature("docstring") AttysCommBase::setConnected "
+`setConnected(int c)`  
 ";
 
 %feature("docstring") AttysCommBase::phys2temperature "
