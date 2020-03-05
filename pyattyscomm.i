@@ -1,3 +1,4 @@
+%include "docstrings.i"
 %module(directors="1") pyattyscomm
 %feature("director") AttysCommListener;
 %feature("director") AttysCommMessage;

@@ -19,13 +19,21 @@ class AttysScan;
 extern AttysScan attysScan;
 
 
-// callback which reports the status of the scanner
+/**
+ * Callback which reports the status of the scanner
+ **/
 struct AttysScanListener {
 	virtual ~AttysScanListener() {};
 	virtual void message(const int, const char *) = 0;
 };
 
 
+/**
+ * Scans for Attys and creates instances of AttysComm
+ * for every detected/paired Attys. There is no need
+ * to create instances of AttysComm yourself. This
+ * is done by this class automatically.
+ **/
 class AttysScan {
 
 public:
@@ -38,11 +46,35 @@ public:
 	**/
 	int scan(int maxAttys = 1);
 
+	/**
+         * Message index that the connection to an attys has been
+         * successful.
+         **/
 	static const int SCAN_CONNECTED = 0;
+
+	/**
+	 * Message index that AttysScan is actively scanning
+         **/
 	static const int SCAN_SEARCHING = 1;
+
+	/**
+         * Message index that no Attys has been detected
+         **/
 	static const int SCAN_NODEV = 2;
+
+	/**
+         * Message that the socket could not be opened
+         **/
 	static const int SCAN_SOCKETERR = 3;
+
+	/**
+	 * In the process of connecting
+	 **/
 	static const int SCAN_CONNECTING = 4;
+
+	/**
+	 * Connection error during scanning
+	 **/
 	static const int SCAN_CONNECTERR = 5;
 
 	/**
@@ -91,7 +123,6 @@ public:
 	int nAttysDevices = 0;
 	char** attysName = NULL;
 	AttysComm** attysComm = NULL;
-
 };
 
 
