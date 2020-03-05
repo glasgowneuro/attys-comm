@@ -83,6 +83,10 @@ You need to overload the virtual function of the callback in your program.
 ```
 attysScan.getAttysComm(0)->start();
 ```
+If you have registered a callback then it's all set!
+
+If you have no callback registered then you need to retreive the
+samples from the ringbuffer in steps 7.-9.:
 
 7. Check if ringbuffer contains data and wait till true
 ```
