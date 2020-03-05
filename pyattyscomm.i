@@ -27,6 +27,21 @@
   }
 }
 
+/**
+%typemap(in,numinputs=0) sample_p (sample_p temp) {
+	$1 = temp;
+}
+
+
+%typemap(argout) sample_p s {
+  PyObject* list = PyList_New(10);
+  for (size_t i = 0; i < 10; ++i) {
+	  PyList_SetItem(list, i, PyFloat_FromDouble((float)(temp$argnum[i])));
+  }
+  $result = list;
+}
+**/
+
 %include "AttysCommBase.h"
 %include "attyscomm/base64.h"
 %include "AttysComm.h"

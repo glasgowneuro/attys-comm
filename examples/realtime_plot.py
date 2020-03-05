@@ -35,11 +35,14 @@ ax.set_ylim(-2, 2)
 # receives the data from the generator below
 def update(data):
     global plotbuffer
+    global ax
     plotbuffer=np.append(plotbuffer,data)
     # only keep the 500 newest ones and discard the old ones
     plotbuffer=plotbuffer[-500:]
     # set the new 500 points of channel 9
     line.set_ydata(plotbuffer)
+    dy = (plotbuffer.max() - plotbuffer.min())/10
+    ax.set_ylim(plotbuffer.min() - dy,plotbuffer.max() + dy)
     return line,
 
 # this checks in an endless loop if there is data in the ringbuffer

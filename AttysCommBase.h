@@ -27,21 +27,22 @@
 #endif
 #endif
 
-/**
- * callback when a sample has arrived
- **/
-struct AttysCommListener {
-	// provides timestamp, array of all channels
-	virtual void hasSample(double, float *) = 0;
-	// empty destructor in case of a delete
-	virtual ~AttysCommListener() {};
-};
-
 
 /**
  * type which represents the samples
  **/
 typedef float* sample_p;
+
+
+/**
+ * callback when a sample has arrived
+ **/
+struct AttysCommListener {
+	// provides timestamp, array of all channels
+	virtual void hasSample(double, sample_p) = 0;
+	// empty destructor in case of a delete
+	virtual ~AttysCommListener() {};
+};
 
 
 /**

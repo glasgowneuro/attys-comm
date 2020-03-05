@@ -12,7 +12,7 @@ if (c == None):
     quit()
 c.start()
 while True:
-    while (not c.hasSampleAvilabale()):
+    while (not c.hasSampleAvailable()):
         pass
     sample = c.getSampleFromBuffer()
     print(sample)
