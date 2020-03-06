@@ -7,25 +7,22 @@
 %feature("docstring") AttysComm "
 `AttysComm(void *_btAddr=NULL, int _btAddrLen=0)`  
 
-AttysComm contains all the neccessary comms to talk to the Attys on both Linux
-and Windows.  
-
-1) Instantiate the class AttyScan and do a scan It finds all paired Attys and
-creates separate AttysComm classes 2) These classes are in in the array
-attysComm in AttysScan and the number of them in nAttysDevices. 3) All attysComm
-are Threads so just start the data acquisition with start(), for example
-attysComm[0]->start() for the 1st Attys 4) Get the data either via the
-RingBuffer functions or register a callback to get the data as it arrives.
-AttysComm class which contains the device specific definitions and implements
-the abstract classes of AttysCommBase. See AttysCommBase for the definitions
-there.  
+AttysComm contains all the neccessary comms to talk to the Attys on Linux,
+Windows and Mac.   AttysComm class contains the device specific definitions and
+implements the abstract classes of AttysCommBase. See AttysCommBase for the
+definitions there. Instances of this class are automatically created by
+AttysScan and the user can ignore definitions here. All relevant user functions
+are in AttysCommBase. Use this class only if you have a fixed bluetooth address
+(Linux/Win) or a fixed bluetooth device (Mac) and won't need to scan for a
+bluetooth device.  
 
 Constructors
 ------------
 * `AttysComm(void *_btAddr=NULL, int _btAddrLen=0)`  
     
     Constructor: Win/Linux: takes the bluetooth device structure and its length
-    as an argument. For Mac: just a pointer to the device.  
+    as an argument. For Mac: just a pointer to the bluetooth device (needs
+    typecast to *_btAddr) and provide no length.  
 
 C++ includes: AttysComm.h
 ";
@@ -34,35 +31,46 @@ C++ includes: AttysComm.h
 `AttysComm(void *_btAddr=NULL, int _btAddrLen=0)`  
 
 Constructor: Win/Linux: takes the bluetooth device structure and its length as
-an argument. For Mac: just a pointer to the device.  
+an argument. For Mac: just a pointer to the bluetooth device (needs typecast to
+*_btAddr) and provide no length.  
 ";
 
 %feature("docstring") AttysComm::connect "
 `connect()`  
 
-connects to the Attys by opening the socket throws exception if it fails.  
+Connects to the Attys by opening the socket. Throws char* exception if it fails.  
 ";
 
 %feature("docstring") AttysComm::closeSocket "
 `closeSocket()`  
 
-closes socket safely  
+Closes the socket safely.  
 ";
 
 %feature("docstring") AttysComm::run "
 `run()`  
+
+Thread which does the data acquisition. Do not call directly.  
 ";
 
 %feature("docstring") AttysComm::quit "
 `quit()`  
+
+Call this from the main activity to shut down the connection.  
 ";
 
 %feature("docstring") AttysComm::sendSyncCommand "
 `sendSyncCommand(const char *message, int waitForOK)`  
+
+Sends a command to the Attys. Do not use unless you know exactly what you are
+doing.  
 ";
 
 %feature("docstring") AttysComm::sendInit "
 `sendInit()`  
+
+Sends the init sequence to the Attys. Do not use unless you know exactly what
+you are doing.  
 ";
 
 %feature("docstring") AttysComm::start "
@@ -74,18 +82,20 @@ init commands.
 
 %feature("docstring") AttysComm::receptionTimeout "
 `receptionTimeout()`  
+
+Called from the watchdog after a timeout. Do not call this directly.  
 ";
 
 %feature("docstring") AttysComm::getBluetoothBinaryAdress "
 `getBluetoothBinaryAdress() -> unsigned char *`  
 
-returns an array of 14 bytes of the bluetooth address  
+Returns an array of 14 bytes of the bluetooth address.  
 ";
 
 %feature("docstring") AttysComm::getBluetoothAdressString "
 `getBluetoothAdressString(char *s)`  
 
-returns the Mac address as a string  
+returns the MAC address as a string.  
 ";
 
 // File: classAttysCommBase.xml
@@ -99,6 +109,8 @@ Platform independent definitions for the Attys
 Constructors
 ------------
 * `AttysCommBase()`  
+    
+    Constructor which is overloaded by AttysComm.  
 
 Attributes
 ----------
@@ -109,46 +121,49 @@ Attributes
     Number of entries in the ringbuffer. Buffer for 10secs at 1kHz.  
 
 * `INDEX_Acceleration_X` : `const int`  
-    Channel index for X Acceleration  
+    Channel index for X Acceleration.  
 
 * `INDEX_Acceleration_Y` : `const int`  
-    Channel index for Y Acceleration  
+    Channel index for Y Acceleration.  
 
 * `INDEX_Acceleration_Z` : `const int`  
-    Channel index for Z Acceleration  
+    Channel index for Z Acceleration.  
 
 * `INDEX_Magnetic_field_X` : `const int`  
-    Magnetic field in X direction  
+    Magnetic field in X direction.  
 
 * `INDEX_Magnetic_field_Y` : `const int`  
-    Magnetic field in Y direction  
+    Magnetic field in Y direction.  
 
 * `INDEX_Magnetic_field_Z` : `const int`  
-    Magnetic field in Z direction  
+    Magnetic field in Z direction.  
 
 * `INDEX_Analogue_channel_1` : `const int`  
-    Index of analogue channel 1  
+    Index of analogue channel 1.  
 
 * `INDEX_Analogue_channel_2` : `const int`  
-    Index of analogue channel 2  
+    Index of analogue channel 2.  
 
 * `INDEX_GPIO0` : `const int`  
-    Index of the internal GPIO pin 1  
+    Index of the internal GPIO pin 1.  
 
 * `INDEX_GPIO1` : `const int`  
-    Index of the internal GPIO pin 2  
+    Index of the internal GPIO pin 2.  
 
 * `ADC_RATE_125HZ` : `const int`  
-    Constant defining sampling rate of 125Hz  
+    Constant defining sampling rate of 125Hz.  
 
 * `ADC_RATE_250HZ` : `const int`  
-    Constant defining sampling rate of 250Hz  
+    Constant defining sampling rate of 250Hz.  
 
 * `ADC_RATE_500Hz` : `const int`  
-    Constant defining sampling rate of 500Hz  
+    Constant defining sampling rate of 500Hz (experimental).  
+
+* `ADC_RATE_1000Hz` : `const int`  
+    Constant defining sampling rate of 1000Hz (experimental).  
 
 * `ADC_DEFAULT_RATE` : `const int`  
-    Constant defining the default sampling rate (250Hz)  
+    Constant defining the default sampling rate (250Hz).  
 
 * `ADC_GAIN_6` : `const int`  
     Gain index setting it to gain 6.  
@@ -172,46 +187,47 @@ Attributes
     Gain index setting it to gain 6.  
 
 * `ADC_CURRENT_6NA` : `const int`  
-    Bias current of 6nA  
+    Bias current of 6nA.  
 
 * `ADC_CURRENT_22NA` : `const int`  
-    Bias current of 22nA  
+    Bias current of 22nA.  
 
 * `ADC_CURRENT_6UA` : `const int`  
-    Bias current of 6uA  
+    Bias current of 6uA.  
 
 * `ADC_CURRENT_22UA` : `const int`  
-    Bias current of 22uA  
+    Bias current of 22uA.  
 
 * `ADC_MUX_NORMAL` : `const int`  
-    Muliplexer routing is normal: ADC1 and ADC2 are connected to the sigma/delta  
+    Muliplexer routing is normal: ADC1 and ADC2 are connected to the
+    sigma/delta.  
 
 * `ADC_MUX_SHORT` : `const int`  
-    Muliplexer routing: inputs are short circuited  
+    Muliplexer routing: inputs are short circuited.  
 
 * `ADC_MUX_SUPPLY` : `const int`  
-    Muliplexer routing: inputs are connected to power supply  
+    Muliplexer routing: inputs are connected to power supply.  
 
 * `ADC_MUX_TEMPERATURE` : `const int`  
-    Muliplexer routing: ADC measures internal temperature  
+    Muliplexer routing: ADC measures internal temperature.  
 
 * `ADC_MUX_TEST_SIGNAL` : `const int`  
-    Muliplexer routing: ADC measures test signal  
+    Muliplexer routing: ADC measures test signal.  
 
 * `ADC_MUX_ECG_EINTHOVEN` : `const int`  
-    Muliplexer routing: both positive ADC inputs are connected together  
+    Muliplexer routing: both positive ADC inputs are connected together.  
 
 * `ACCEL_2G` : `const int`  
-    Setting full scale range of the accelerometer to 2G  
+    Setting full scale range of the accelerometer to 2G.  
 
 * `ACCEL_4G` : `const int`  
-    Setting full scale range of the accelerometer to 4G  
+    Setting full scale range of the accelerometer to 4G.  
 
 * `ACCEL_8G` : `const int`  
-    Setting full scale range of the accelerometer to 8G  
+    Setting full scale range of the accelerometer to 8G.  
 
 * `ACCEL_16G` : `const int`  
-    Setting full scale range of the accelerometer to 16G  
+    Setting full scale range of the accelerometer to 16G.  
 
 * `MESSAGE_CONNECTED` : `const int`  
     Message callback: Connected.  
@@ -229,13 +245,13 @@ Attributes
     Message callback: Receiving data.  
 
 * `CHANNEL_DESCRIPTION` : `const std::string`  
-    Long descriptions of the channels in text form  
+    Long descriptions of the channels.  
 
 * `CHANNEL_SHORT_DESCRIPTION` : `const std::string`  
-    Short descriptions of the channels in text form  
+    Short descriptions of the channels.  
 
 * `CHANNEL_UNITS` : `std::string const`  
-    Units of the channels  
+    Units of the channels.  
 
 * `ADC_SAMPLINGRATE` : `const int`  
     Array of the sampling rates mapping the index to the actual sampling rate.  
@@ -244,16 +260,16 @@ Attributes
     Mmapping between index and actual gain.  
 
 * `ADC_REF` : `const float`  
-    The voltage reference of the ADC in volts  
+    The voltage reference of the ADC in volts.  
 
 * `oneG` : `const float`  
-    One g in m/s^2  
+    One g in m/s^2.  
 
 * `ACCEL_FULL_SCALE` : `const float`  
-    Mapping of the index to the full scale accelerations  
+    Mapping of the index to the full scale accelerations.  
 
 * `MAG_FULL_SCALE` : `const float`  
-    Full scale range of the magnetometer in Tesla  
+    Full scale range of the magnetometer in Tesla.  
 
 * `attysCommMessage` : `AttysCommMessage *`  
 
@@ -262,10 +278,14 @@ C++ includes: AttysCommBase.h
 
 %feature("docstring") AttysCommBase::AttysCommBase "
 `AttysCommBase()`  
+
+Constructor which is overloaded by AttysComm.  
 ";
 
 %feature("docstring") AttysCommBase::~AttysCommBase "
 `~AttysCommBase()`  
+
+Destructor which releases memory and closes any open connection.  
 ";
 
 %feature("docstring") AttysCommBase::setAdc_samplingrate_index "
@@ -277,7 +297,7 @@ Sets the sampling rate using the sampling rate index numbers.
 %feature("docstring") AttysCommBase::getSamplingRateInHz "
 `getSamplingRateInHz() -> int`  
 
-Gets the sampling rate in Hz (not index number)  
+Gets the sampling rate in Hz (not index number).  
 ";
 
 %feature("docstring") AttysCommBase::getAdc_samplingrate_index "
@@ -295,13 +315,13 @@ Gets the ADC full range. This depends on the gain setting of the ADC.
 %feature("docstring") AttysCommBase::setAdc0_gain_index "
 `setAdc0_gain_index(int idx)`  
 
-Gets the gain index for ADC1  
+Gets the gain index for ADC1.  
 ";
 
 %feature("docstring") AttysCommBase::setAdc1_gain_index "
 `setAdc1_gain_index(int idx)`  
 
-Gets the gain index for ADC2  
+Gets the gain index for ADC2.  
 ";
 
 %feature("docstring") AttysCommBase::setBiasCurrent "
@@ -333,7 +353,7 @@ Switches bias currents on
 %feature("docstring") AttysCommBase::getAccelFullScaleRange "
 `getAccelFullScaleRange() -> float`  
 
-Returns the accelerometer current full scale reading in m/s^2  
+Returns the accelerometer current full scale reading in m/s^2.  
 ";
 
 %feature("docstring") AttysCommBase::setAccel_full_scale_index "
@@ -345,7 +365,7 @@ Sets the accelerometer full scale range using the index.
 %feature("docstring") AttysCommBase::getMagFullScaleRange "
 `getMagFullScaleRange() -> float`  
 
-Returns the full scale magnetometer in Tesla  
+Returns the full scale magnetometer in Tesla.  
 ";
 
 %feature("docstring") AttysCommBase::getIsCharging "
@@ -357,7 +377,7 @@ Charging indicator. Returns one if charging.
 %feature("docstring") AttysCommBase::connect "
 `connect()=0`  
 
-connects to the Attys by opening the socket throws exception if it fails.  
+Connects to the Attys by opening the socket. Throws char* exception if it fails.  
 ";
 
 %feature("docstring") AttysCommBase::start "
@@ -370,74 +390,75 @@ init commands.
 %feature("docstring") AttysCommBase::closeSocket "
 `closeSocket()=0`  
 
-closes socket safely  
+Closes the socket safely.  
 ";
 
 %feature("docstring") AttysCommBase::hasActiveConnection "
 `hasActiveConnection() -> int`  
 
-Returns 1 if the connection is active.  
+Returns one if the connection is active.  
 ";
 
 %feature("docstring") AttysCommBase::getSampleFromBuffer "
 `getSampleFromBuffer() -> sample_p`  
 
-Gets a sample from the ringbuffer. This is a C array of all samples.  
+Gets a sample from the ringbuffer. This is a float* array of all channels.  
 ";
 
 %feature("docstring") AttysCommBase::hasSampleAvailable "
 `hasSampleAvailable() -> int`  
 
-Is one if samples are available in the ringbuffer  
+Is set to one if samples are available in the ringbuffer.  
 ";
 
 %feature("docstring") AttysCommBase::resetRingbuffer "
 `resetRingbuffer()`  
 
-Resets the ringbuffer to zero content  
+Resets the ringbuffer to zero content.  
 ";
 
 %feature("docstring") AttysCommBase::registerCallback "
 `registerCallback(AttysCommListener *f)`  
 
-Realtime callback function which is called whenever a sample has arrived.
-Implemented as an interface.  
+Register a realtime callback function which is called whenever a sample has
+arrived. AttysCommListener is an abstract class which needs to implement
+hasSample().  
 ";
 
 %feature("docstring") AttysCommBase::unregisterCallback "
 `unregisterCallback()`  
 
-Unregister the sample callback  
+Unregister the realtime sample callback.  
 ";
 
 %feature("docstring") AttysCommBase::registerMessageCallback "
 `registerMessageCallback(AttysCommMessage *f)`  
 
-Callback function which is called whenever a special error/event has occurred.  
+Callback which is called whenever a special error/event has occurred.  
 ";
 
 %feature("docstring") AttysCommBase::unregisterMessageCallback "
 `unregisterMessageCallback()`  
 
-Unregister the message callback.  
+Unregister the error/event callback.  
 ";
 
 %feature("docstring") AttysCommBase::quit "
 `quit()`  
 
-Call this from the main activity to shutdown the connection  
+Call this from the main activity to shut down the connection.  
 ";
 
 %feature("docstring") AttysCommBase::getBluetoothBinaryAdress "
 `getBluetoothBinaryAdress()=0 -> unsigned char *`  
 
-returns an array of 14 bytes of the bluetooth address  
+Returns an array of 14 bytes of the bluetooth address.  
 ";
 
 %feature("docstring") AttysCommBase::getBluetoothAdressString "
 `getBluetoothAdressString(char *s)=0`  
 
-returns the Mac address as a string  
+returns the MAC address as a string.  
 ";
 
 %feature("docstring") AttysCommBase::processRawAttysData "
@@ -463,13 +484,17 @@ Temperature
 
 %feature("docstring") AttysCommListener "
 
-callback when a sample has arrived  
+Callback after a sample has arrived. The main class can for example inherit
+class and implement hasSample.  
 
 C++ includes: AttysCommBase.h
 ";
 
 %feature("docstring") AttysCommListener::hasSample "
-`hasSample(double, float *)=0`  
+`hasSample(double, sample_p)=0`  
+
+Provides the timestamp and an array of all channels. This is an abstract method
+and needs to be overloaded with a real method doing the work.  
 ";
 
 %feature("docstring") AttysCommListener::~AttysCommListener "
@@ -481,13 +506,16 @@ C++ includes: AttysCommBase.h
 
 %feature("docstring") AttysCommMessage "
 
-callback when an error has occurred  
+Callback after an error has occurred. This callback is in particular useful
+after a broken connection has been re-established.  
 
 C++ includes: AttysCommBase.h
 ";
 
 %feature("docstring") AttysCommMessage::hasMessage "
 `hasMessage(int, const char *)=0`  
+
+Provides the error number and a text message about the error.  
 ";
 
 %feature("docstring") AttysCommMessage::~AttysCommMessage "
@@ -605,8 +633,4 @@ C++ includes: AttysScan.h
 // File: AttysScan_8h.xml
 
 // File: LICENSE.xml
-
-// File: README_8md.xml
-
-// File: md_README.xml
 

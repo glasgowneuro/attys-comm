@@ -11,6 +11,13 @@
 
 #include "attyscomm/base64.h"
 
+/**
+ * AttysCommBase contains all definitions which are relevant to the user.
+ * Class instances are usually automatically created by AttysScan when
+ * it's searching for Attys boxes. AttysScan the provides pointers
+ * to the AttysComm instances.
+ **/
+
 
 /**
  * Timeout for the Attys
@@ -35,10 +42,16 @@ typedef float* sample_p;
 
 
 /**
- * callback when a sample has arrived
+ * Callback after a sample has arrived.
+ * The main class can for example inherit class
+ * and implement hasSample.
  **/
 struct AttysCommListener {
-	// provides timestamp, array of all channels
+	/**
+	 * Provides the timestamp and an array of all channels.
+	 * This is an abstract method and needs to be
+	 * overloaded with a real method doing the work.
+	 **/
 	virtual void hasSample(double, sample_p) = 0;
 	// empty destructor in case of a delete
 	virtual ~AttysCommListener() {};
@@ -46,10 +59,14 @@ struct AttysCommListener {
 
 
 /**
- * callback when an error has occurred
+ * Callback after an error has occurred.
+ * This callback is in particular useful after a broken
+ * connection has been re-established.
  **/
 struct AttysCommMessage {
-	// provides error number and a text message about the error
+	/**
+	 * Provides the error number and a text message about the error.
+	 **/
 	virtual void hasMessage(int, const char*) = 0;
 	// empty destructor in case of a delete
 	virtual ~AttysCommMessage() {};
@@ -62,7 +79,15 @@ struct AttysCommMessage {
 class AttysCommBase
 {
 public:
+	/**
+	 * Constructor which is overloaded by AttysComm.
+	 **/
 	AttysCommBase();
+
+	/**
+	 * Destructor which releases memory and closes
+	 * any open connection.
+	 **/
 	virtual ~AttysCommBase();
 
 	/**
@@ -77,58 +102,58 @@ public:
 	static const int nMem = 1000 * 10;
 
 	/**
-	 * Channel index for X Acceleration
+	 * Channel index for X Acceleration.
 	 **/
 	static const int INDEX_Acceleration_X = 0;
 
 	/**
-	 * Channel index for Y Acceleration
+	 * Channel index for Y Acceleration.
 	 **/
 	static const int INDEX_Acceleration_Y = 1;
 
 	/**
-	 * Channel index for Z Acceleration
+	 * Channel index for Z Acceleration.
 	 **/
 	static const int INDEX_Acceleration_Z = 2;
 
 	/**
-	 * Magnetic field in X direction
+	 * Magnetic field in X direction.
 	 **/
 	static const int INDEX_Magnetic_field_X = 3;
 
 	/**
-	 * Magnetic field in Y direction
+	 * Magnetic field in Y direction.
 	 **/
 	static const int INDEX_Magnetic_field_Y = 4;
 
 	/**
-	 * Magnetic field in Z direction
+	 * Magnetic field in Z direction.
 	 **/
 	static const int INDEX_Magnetic_field_Z = 5;
 
 	/**
-	 * Index of analogue channel 1
+	 * Index of analogue channel 1.
 	 **/
 	static const int INDEX_Analogue_channel_1 = 6;
 
 	/**
-	 * Index of analogue channel 2
+	 * Index of analogue channel 2.
 	 **/
 	static const int INDEX_Analogue_channel_2 = 7;
 
 	/**
-	 * Index of the internal GPIO pin 1
+	 * Index of the internal GPIO pin 1.
 	 **/
 	static const int INDEX_GPIO0 = 8;
 
 	/**
-	 * Index of the internal GPIO pin 2
+	 * Index of the internal GPIO pin 2.
 	 **/
 	static const int INDEX_GPIO1 = 9;
 
 
 	/**
-	 * Long descriptions of the channels in text form
+	 * Long descriptions of the channels.
 	 **/
 	const std::string CHANNEL_DESCRIPTION[NCHANNELS] = {
 		"Acceleration X",
@@ -145,7 +170,7 @@ public:
 	};
 
 	/**
-	 * Short descriptions of the channels in text form
+	 * Short descriptions of the channels.
 	 **/
 	const std::string CHANNEL_SHORT_DESCRIPTION[NCHANNELS] = {
 		"Acc X",
@@ -161,7 +186,7 @@ public:
 	};
 
 	/**
-	 * Units of the channels
+	 * Units of the channels.
 	 **/
 	std::string const CHANNEL_UNITS[NCHANNELS] = {
 		"m/s^2",
@@ -180,22 +205,27 @@ public:
 	// ADC sampling rate and for the whole system
 
 	/**
-	 * Constant defining sampling rate of 125Hz
+	 * Constant defining sampling rate of 125Hz.
 	 **/
        	static const int ADC_RATE_125HZ = 0;
 
 	/**
-	 * Constant defining sampling rate of 250Hz
+	 * Constant defining sampling rate of 250Hz.
 	 **/
 	static const int ADC_RATE_250HZ = 1;
 
 	/**
-	 * Constant defining sampling rate of 500Hz
+	 * Constant defining sampling rate of 500Hz (experimental).
 	 **/
 	static const int ADC_RATE_500Hz = 2;
 
 	/**
-	 * Constant defining the default sampling rate (250Hz)
+	 * Constant defining sampling rate of 1000Hz (experimental).
+	 **/
+	static const int ADC_RATE_1000Hz = 3;
+
+	/**
+	 * Constant defining the default sampling rate (250Hz).
 	 **/
 	static const int ADC_DEFAULT_RATE = ADC_RATE_250HZ;
 
@@ -219,7 +249,7 @@ public:
 	}
 
 	/**
-	 * Gets the sampling rate in Hz (not index number)
+	 * Gets the sampling rate in Hz (not index number).
 	 **/
 	int getSamplingRateInHz() {
 		return ADC_SAMPLINGRATE[adc_rate_index];
@@ -281,7 +311,7 @@ public:
 	const int ADC_GAIN_FACTOR[7] = { 6, 1, 2, 3, 4, 8, 12 };
 
 	/**
-	 * The voltage reference of the ADC in volts
+	 * The voltage reference of the ADC in volts.
 	 **/
 	const float ADC_REF = 2.42F;
 
@@ -303,14 +333,14 @@ public:
 	}
 
 	/**
-	 * Gets the gain index for ADC1
+	 * Gets the gain index for ADC1.
 	 **/
 	void setAdc0_gain_index(int idx) {
 		adc0_gain_index = idx;
 	}
 
 	/**
-	 * Gets the gain index for ADC2
+	 * Gets the gain index for ADC2.
 	 **/
 	void setAdc1_gain_index(int idx) {
 		adc1_gain_index = idx;
@@ -328,22 +358,22 @@ public:
 	// used to measure resistance
 
 	/**
-	 * Bias current of 6nA
+	 * Bias current of 6nA.
 	 **/
 	static const int ADC_CURRENT_6NA = 0;
 
 	/**
-	 * Bias current of 22nA
+	 * Bias current of 22nA.
 	 **/
 	static const int ADC_CURRENT_22NA = 1;
 
 	/**
-	 * Bias current of 6uA
+	 * Bias current of 6uA.
 	 **/
 	static const int ADC_CURRENT_6UA = 2;
 
 	/**
-	 * Bias current of 22uA
+	 * Bias current of 22uA.
 	 **/
 	static const int ADC_CURRENT_22UA = 3;
 
@@ -388,32 +418,32 @@ public:
 	// for the ADC channels
 
 	/**
-	 * Muliplexer routing is normal: ADC1 and ADC2 are connected to the sigma/delta
+	 * Muliplexer routing is normal: ADC1 and ADC2 are connected to the sigma/delta.
 	 **/
 	static const int ADC_MUX_NORMAL = 0;
 	
 	/**
-	 * Muliplexer routing: inputs are short circuited
+	 * Muliplexer routing: inputs are short circuited.
 	 **/
 	static const int ADC_MUX_SHORT = 1;
 	
 	/**
-	 * Muliplexer routing: inputs are connected to power supply
+	 * Muliplexer routing: inputs are connected to power supply.
 	 **/
 	static const int ADC_MUX_SUPPLY = 3;
 	
 	/**
-	 * Muliplexer routing: ADC measures internal temperature
+	 * Muliplexer routing: ADC measures internal temperature.
 	 **/
 	static const int ADC_MUX_TEMPERATURE = 4;
 
 	/**
-	 * Muliplexer routing: ADC measures test signal
+	 * Muliplexer routing: ADC measures test signal.
 	 **/
 	static const int ADC_MUX_TEST_SIGNAL = 5;
 
 	/**
-	 * Muliplexer routing: both positive ADC inputs are connected together
+	 * Muliplexer routing: both positive ADC inputs are connected together.
 	 **/
 	static const int ADC_MUX_ECG_EINTHOVEN = 6;
 
@@ -443,32 +473,32 @@ public:
 	// accelerometer
 
 	/**
-	 * Setting full scale range of the accelerometer to 2G
+	 * Setting full scale range of the accelerometer to 2G.
 	 **/
 	static const int ACCEL_2G = 0;
 
 	/**
-	 * Setting full scale range of the accelerometer to 4G
+	 * Setting full scale range of the accelerometer to 4G.
 	 **/
 	static const int ACCEL_4G = 1;
 
 	/**
-	 * Setting full scale range of the accelerometer to 8G
+	 * Setting full scale range of the accelerometer to 8G.
 	 **/
 	static const int ACCEL_8G = 2;
 
 	/**
-	 * Setting full scale range of the accelerometer to 16G
+	 * Setting full scale range of the accelerometer to 16G.
 	 **/
 	static const int ACCEL_16G = 3;
 
 	/**
-	 * One g in m/s^2
+	 * One g in m/s^2.
 	 **/
 	const float oneG = 9.80665F; // m/s^2
 
 	/**
-	 * Mapping of the index to the full scale accelerations
+	 * Mapping of the index to the full scale accelerations.
 	 **/
 	const float ACCEL_FULL_SCALE[4] = { 2 * oneG, 4 * oneG, 8 * oneG, 16 * oneG }; // m/s^2
 
@@ -477,7 +507,7 @@ private:
 
 public:
 	/**
-	 * Returns the accelerometer current full scale reading in m/s^2
+	 * Returns the accelerometer current full scale reading in m/s^2.
 	 **/
 	float getAccelFullScaleRange() {
 		return ACCEL_FULL_SCALE[accel_full_scale_index];
@@ -497,12 +527,12 @@ public:
 	//
 
 	/**
-	 * Full scale range of the magnetometer in Tesla
+	 * Full scale range of the magnetometer in Tesla.
 	 **/
 	const float MAG_FULL_SCALE = 4800.0E-6F; // TESLA
 
 	/**
-	 * Returns the full scale magnetometer in Tesla
+	 * Returns the full scale magnetometer in Tesla.
 	 **/
 	float getMagFullScaleRange() {
 		return MAG_FULL_SCALE;
@@ -549,8 +579,8 @@ public:
 	static const int MESSAGE_RECEIVING_DATA = 9;
 
 	/**
-	 * connects to the Attys by opening the socket
-	 * throws exception if it fails.
+	 * Connects to the Attys by opening the socket.
+	 * Throws char* exception if it fails.
 	 **/
 	virtual void connect() = 0;
 
@@ -564,7 +594,7 @@ public:
 	};
 
 	/**
-	 * closes socket safely
+	 * Closes the socket safely.
 	 **/
 	virtual void closeSocket() = 0;
 
@@ -572,7 +602,7 @@ public:
 	// connection info
 
 	/**
-	 * Returns 1 if the connection is active.
+	 * Returns one if the connection is active.
 	 **/
 	int hasActiveConnection() {
 		return isConnected;
@@ -580,19 +610,19 @@ public:
     
 
 	/**
-	 * Gets a sample from the ringbuffer. This is a C array of all samples.
+	 * Gets a sample from the ringbuffer. This is a float* array of all channels.
 	 **/
 	sample_p getSampleFromBuffer();
 
 	/**
-	 * Is one if samples are available in the ringbuffer
+	 * Is set to one if samples are available in the ringbuffer.
 	 **/
 	int hasSampleAvailable() {
 		return (inPtr != outPtr);
 	}
 
 	/**
-	 * Resets the ringbuffer to zero content
+	 * Resets the ringbuffer to zero content.
 	 **/
 	void resetRingbuffer() {
 		inPtr = 0;
@@ -603,16 +633,17 @@ public:
 	////////////////////////////////////////////////
 
 	/**
-	 * Realtime callback function which is called
+	 * Register a realtime callback function which is called
 	 * whenever a sample has arrived.
-	 * Implemented as an interface.
+	 * AttysCommListener is an abstract class which
+         * needs to implement hasSample().
 	 **/
 	void registerCallback(AttysCommListener* f) {
 		callbackInterface = f;
 	}
 
 	/** 
-	 * Unregister the sample callback
+	 * Unregister the realtime sample callback.
 	 **/
 	void unregisterCallback() {
 		callbackInterface = NULL;
@@ -620,7 +651,7 @@ public:
 
 
 	/**
-	 * Callback function which is called
+	 * Callback which is called
 	 * whenever a special error/event has occurred.
 	 **/
 	void registerMessageCallback(AttysCommMessage* f) {
@@ -628,24 +659,24 @@ public:
 	}
 
 	/**
-	 * Unregister the message callback.
+	 * Unregister the error/event callback.
 	 **/
 	void unregisterMessageCallback() {
 		attysCommMessage = NULL;
 	}
 
 	/**
-	 * Call this from the main activity to shutdown the connection
+	 * Call this from the main activity to shut down the connection.
 	 **/
 	void quit();
 
 	/**
-	 * returns an array of 14 bytes of the bluetooth address
+	 * Returns an array of 14 bytes of the bluetooth address.
 	 **/
 	virtual unsigned char* getBluetoothBinaryAdress() = 0;
 
 	/**
-	 * returns the Mac address as a string
+	 * returns the MAC address as a string.
 	 **/
 	virtual void getBluetoothAdressString(char* s) = 0;
 

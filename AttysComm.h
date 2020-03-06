@@ -7,18 +7,8 @@ class AttysComm;
 
 /**
  * AttysComm contains all the neccessary comms to talk to
- * the Attys on both Linux and Windows.
- *
- * 1) Instantiate the class AttyScan and do a scan
- *    It finds all paired Attys and creates separate AttysComm classes
- * 2) These classes are in in the array attysComm in AttysScan and
- *    the number of them in nAttysDevices.
- * 3) All attysComm are Threads so just start the data acquisition
- *    with start(), for example attysComm[0]->start() for the 1st Attys
- * 4) Get the data either via the RingBuffer functions or register a
- *    callback to get the data as it arrives.
+ * the Attys on Linux, Windows and Mac. \n
  **/
-
 
 #ifdef __linux__ 
 #include <bluetooth/bluetooth.h>
@@ -57,11 +47,19 @@ class AttysComm;
 #pragma once
 
 /**
- * AttysComm class which contains the
+ * AttysComm class contains the
  * device specific definitions and
  * implements the abstract classes of
  * AttysCommBase. See AttysCommBase
  * for the definitions there.
+ * Instances of this class are automatically
+ * created by AttysScan and the user
+ * can ignore definitions here. All relevant
+ * user functions are in AttysCommBase.
+ * Use this class only if you have a fixed
+ * bluetooth address (Linux/Win) or a fixed
+ * bluetooth device (Mac) and won't need
+ * to scan for a bluetooth device.
  **/
 class AttysComm : public AttysCommBase
 {
@@ -69,9 +67,9 @@ public:
 /**
  * Constructor: Win/Linux: takes the bluetooth device structure
  * and its length as an argument. For Mac: just a pointer to the
- * device.
+ * bluetooth device (needs typecast to *_btAddr) and provide
+ * no length.
  **/
-	// it then tries to connect to the Attys
 	AttysComm(void *_btAddr = NULL, int _btAddrLen = 0) : AttysCommBase() {
 		if (_btAddrLen > 0) {
 			btAddr = (struct sockaddr *) malloc(_btAddrLen);
@@ -84,12 +82,26 @@ public:
 		}
 	};
 
+	/**
+	 * Connects to the Attys by opening the socket.
+	 * Throws char* exception if it fails.
+	 **/	
 	virtual void connect();
 
+	/**
+	 * Closes the socket safely.
+	 **/
 	virtual void closeSocket();
 
+	/**
+	 * Thread which does the data acquisition.
+	 * Do not call directly.
+	 **/
 	virtual void run();
 
+	/**
+	 * Call this from the main activity to shut down the connection.
+	 **/
 	virtual void quit() {
 		AttysCommBase::quit();
 		closeSocket();
@@ -99,18 +111,39 @@ public:
 		}
 	}
 
+	/**
+	 * Sends a command to the Attys.
+	 * Do not use unless you know exactly what you are doing.
+	 **/
 	virtual void sendSyncCommand(const char *message, int waitForOK);
 
+	/**
+	 * Sends the init sequence to the Attys. Do not use unless
+	 * you know exactly what you are doing.
+	 **/
 	virtual void sendInit();
 
+	/**
+	 * Starts the data acquisition by starting the main thread.
+	 * and sending possibly init commands.
+	 **/
 	virtual void start();
 
+	/**
+	 * Called from the watchdog after a timeout. Do not
+	 * call this directly.
+	 **/
 	virtual void receptionTimeout();
 
 public:
-	// returns an array of 14 bytes
+	/**
+	 * Returns an array of 14 bytes of the bluetooth address.
+	 **/
 	unsigned char* getBluetoothBinaryAdress();
 
+	/**
+	 * returns the MAC address as a string.
+	 **/
 	void getBluetoothAdressString(char* s);
 
 private:
