@@ -2,7 +2,11 @@
 Python API for the Attys
 ========================
 
-Attys is a lightweight bluetooth DAQ box which can measure anything from temperature to ECG.
+Attys is a lightweight wearable bluetooth data acquisition box which can measure anything from temperature to ECG.
+
+It's cross platform and runs under Linux, Windows and macOS.
+
+It has two 24 bit analogue channels, an accelerometer and a magnetometer.
 
 http://www.attys.tech
 
@@ -62,11 +66,10 @@ API documentation
 Query it via the python help system::
 
     import pyattyscomm
-    help(pyattyscomm.AttysScan)
-    help(pyattyscomm.AttysComm)
+    help(pyattyscomm)
 
 
-The Python classes have been generated with SWIG. The header files AttysComm.h and AttysScan.h provide detailed info about the classes:
+The Python classes have been generated with SWIG. The header files AttysComm.h, AttysCommBase,h and AttysScan.h provide detailed info about the classes:
 
 https://github.com/glasgowneuro/attys-comm
 
@@ -80,7 +83,7 @@ https://github.com/glasgowneuro/attys-comm
 Demos
 =====
 
-On github are two python examples which print the
-ADC data to the screen and plots it.
+On github are python examples which show you how
+to plot realtime data from the Attys:
 
 https://github.com/glasgowneuro/attys-python-examples
