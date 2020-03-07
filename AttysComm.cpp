@@ -159,6 +159,8 @@ void AttysComm::run() {
 		attysCommMessage->hasMessage(MESSAGE_RECEIVING_DATA, "Receiving data now");
 	}
 
+	isConnected = 1;
+
 	watchdogCounter = TIMEOUT_IN_SECS * getSamplingRateInHz();
 	std::thread watchdog(AttysComm::watchdogThread, this);
 
@@ -181,6 +183,8 @@ void AttysComm::run() {
 	}
 
 	watchdog.join();
+
+	isConnected = 0;
 };
 
 

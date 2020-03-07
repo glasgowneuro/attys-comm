@@ -606,7 +606,7 @@ public:
 	 * Returns one if the connection is active.
 	 **/
 	int hasActiveConnection() {
-		return isConnected;
+		return isConnected && (!initialising);
 	}
     
 
@@ -766,7 +766,8 @@ public:
 	// should be be touched.
 	
 	void processRawAttysData(const char* data);
-	
+
+	// needed for the delegate
 	int isInitialising() {
 		return initialising;
 	}

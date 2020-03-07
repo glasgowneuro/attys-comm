@@ -130,12 +130,13 @@ void AttysComm::connect() {
 
 void AttysComm::closeSocket() {
     if (!rfcommchannel) return;
+    _RPT0(0,"Closing RFCOMM channel.\n");
     IOBluetoothRFCOMMChannel *chan = (__bridge IOBluetoothRFCOMMChannel*) rfcommchannel;
     if (chan) {
         [chan closeChannel];
         rfcommchannel = NULL;
     }
-    _RPT0(0,"closing");
+    _RPT0(0,"RFCOMM channel closed.\n");
 }
 
 
