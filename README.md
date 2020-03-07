@@ -112,7 +112,7 @@ This libary is fast and multi threaded. It performs
 the data acquisition in the background while python can then
 do the postprocessing.
 
-Pre-compiled packages for Linux, Windows and MacOS are available.
+Packages for Linux, Windows and MacOS are on PyPi: https://pypi.org/project/pyattyscomm/
 
 ### Linux
 
