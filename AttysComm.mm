@@ -29,17 +29,15 @@
         _RPT1(0,"Error - could not open the RFCOMM channel. Error code = %08x.\n",error);
         delegateCPP->setConnected(0);
         delegateCPP->connectError = 1;
+	delegateCPP->reconnect = 0;
         return;
     }
     else{
         _RPT0(0,"Connected.\n");
         delegateCPP->setConnected(1);
-        delegateCPP->connectError = 0;
+        delegateCPP->connectError = 0; 
 	delegateCPP->reconnect = 0;
-        if (delegateCPP->attysCommMessage) {
-            delegateCPP->attysCommMessage->hasMessage(delegateCPP->MESSAGE_RECEIVING_DATA, "Connected");
-        }
-    }
+   }
     
 }
 
@@ -151,10 +149,17 @@ void AttysComm::sendSyncCommand(const char *msg, int waitForOK) {
         ret = sendBT(msg);
         if (kIOReturnSuccess != ret) {
             if (attysCommMessage) {
-                attysCommMessage->hasMessage(errno, "message transmit error");
+                attysCommMessage->hasMessage(MESSAGE_ERROR, "Message transmit error");
             }
+	    return;
         }
-        sendBT(cr);
+        ret = sendBT(cr);
+        if (kIOReturnSuccess != ret) {
+            if (attysCommMessage) {
+                attysCommMessage->hasMessage(MESSAGE_ERROR, "Message transmit error");
+            }
+	    return;
+        }
         if (!waitForOK) {
             return;
         }
@@ -194,6 +199,9 @@ void AttysComm::sendInit() {
 
 void AttysComm::start() {
     sendInit();
+    if (attysCommMessage) {
+            attysCommMessage->hasMessage(delegateCPP->MESSAGE_RECEIVING_DATA, "Receiving data now.");
+    }
 }
 
 void AttysComm::run() {

@@ -68,7 +68,7 @@ void AttysComm::sendSyncCommand(const char *message, int waitForOK) {
 		ret = send(btsocket, message, (int)strlen(message), 0);
 		if (ret < 0) {
 			if (attysCommMessage) {
-				attysCommMessage->hasMessage(errno, "message transmit error");
+				attysCommMessage->hasMessage(MESSAGE_ERROR, "Message transmit error");
 			}
 		}
 		send(btsocket, cr, (int)strlen(cr), 0);
@@ -81,7 +81,7 @@ void AttysComm::sendSyncCommand(const char *message, int waitForOK) {
 			ret = recv(btsocket, linebuffer, 8191, 0);
 			if (ret < 0) {
 				if (attysCommMessage) {
-					attysCommMessage->hasMessage(errno, "could receive OK");
+					attysCommMessage->hasMessage(MESSAGE_ERROR, "could receive OK");
 				}
 			}
 			if ((ret > 2) && (ret < 5)) {
@@ -156,7 +156,7 @@ void AttysComm::run() {
 	doRun = 1;
 
 	if (attysCommMessage) {
-		attysCommMessage->hasMessage(MESSAGE_RECEIVING_DATA, "Connected");
+		attysCommMessage->hasMessage(MESSAGE_RECEIVING_DATA, "Receiving data now");
 	}
 
 	watchdogCounter = TIMEOUT_IN_SECS * getSamplingRateInHz();
@@ -171,7 +171,7 @@ void AttysComm::run() {
 		int ret = recv(btsocket, recvbuffer, sizeof(recvbuffer), 0);
 		if (ret < 0) {
 			if (attysCommMessage) {
-				attysCommMessage->hasMessage(errno, "data reception error");
+				attysCommMessage->hasMessage(MESSAGE_ERROR, "Data reception error");
 			}
 		}
 		if (ret > 0) {

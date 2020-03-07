@@ -574,7 +574,8 @@ public:
 	static const int MESSAGE_RECONNECTED = 8;
 
 	/**
-	 * Message callback: Receiving data.
+	 * Message callback: Receiving data. 
+         * One off once the connection has been set up.
 	 **/
 	static const int MESSAGE_RECEIVING_DATA = 9;
 
