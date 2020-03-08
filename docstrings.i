@@ -242,7 +242,8 @@ Attributes
     Message callback: Managed to reconnect.  
 
 * `MESSAGE_RECEIVING_DATA` : `const int`  
-    Message callback: Receiving data.  
+    Message callback: Receiving data. One off once the connection has been set
+    up.  
 
 * `CHANNEL_DESCRIPTION` : `const std::string`  
     Long descriptions of the channels.  
