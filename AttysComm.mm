@@ -268,6 +268,7 @@ void AttysComm::run() {
 
 void AttysComm::receptionTimeout() {
     if (reconnect) return;
+    setConnected(0);
     _RPT0(0, "Timeout.\n");
     if (attysCommMessage) {
         attysCommMessage->hasMessage(MESSAGE_TIMEOUT, "reception timeout to Attys");
