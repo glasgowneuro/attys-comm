@@ -33,7 +33,10 @@ int AttysScan::scan(int maxAttysDevs) {
     
     NSArray *deviceArray = [IOBluetoothDevice pairedDevices];
     if ( ( deviceArray == nil ) || ( [deviceArray count] == 0 ) ) {
-        throw "Error - no device has been paired.";
+	if (statusCallback) {
+			statusCallback->message(SCAN_NODEV, "No Attys paired");
+		}
+	return 0;
     }
     
     _RPT1(0,"We have %lu paired device(s).\n",(unsigned long)[deviceArray count]);
