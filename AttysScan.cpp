@@ -11,13 +11,10 @@ AttysScan attysScan;
  * Returns zero on success
  **/
 int AttysScan::scan(int maxAttysDevs) {
-	attysName = new char*[maxAttysDevs];
 	attysComm = new AttysComm*[maxAttysDevs];
 	assert(attysComm != nullptr);
 	for (int devNo = 0; devNo < maxAttysDevs; devNo++) {
 		attysComm[devNo] = nullptr;
-		attysName[devNo] = new char[256];
-		attysName[devNo][0] = 0;
 	}
 
 	nAttysDevices = 0;
@@ -98,7 +95,7 @@ int AttysScan::scan(int maxAttysDevs) {
 						statusCallback->message(SCAN_CONNECTING, tmp);
 					}
 					attysComm[nAttysDevices]->connect();
-					strncpy(attysName[nAttysDevices], name, sizeof(name));
+					attysComm[nAttysDevices]->setAttysName(name);
 					nAttysDevices++;
 					fprintf(stderr, " Connected.\n");
 					if (statusCallback) {

@@ -21,7 +21,7 @@ int main (int,char**) {
 		return 0;
 	}
 	for(int i=0;i<attysScan.getNAttysDevices();i++) {
-		printf("%s\n",attysScan.attysName[i]);
+		printf("%s\n",attysScan.getAttysName(i));
 		attysScan.getAttysComm(i)->start();
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(2000));

@@ -681,6 +681,20 @@ public:
 	 **/
 	virtual void getBluetoothAdressString(char* s) = 0;
 
+	/**
+	 * Returns the name of the Attys
+	 **/
+	char* getAttysName() {
+		return attysName;
+	}
+
+	/**
+	 * Sets the name of the Attys
+	 **/
+	void setAttysName(char *s) {
+		strncpy(attysName, s, 255);
+	}
+
 protected:
 	///////////////////////////////////////////////////////
 	// from here it's private
@@ -706,6 +720,7 @@ protected:
 	int watchdogCounter = 0;
 	int initialising = 1;
 	unsigned long sampleNumber = 0;
+	char attysName[256] = "";
 	std::thread* mainThread = NULL;
 
 	static void execMainThread(AttysCommBase *thr) {

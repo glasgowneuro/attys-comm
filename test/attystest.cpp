@@ -29,15 +29,15 @@ int main (int,char**) {
 	MyMessage mymessage;
 	// scan for Attys
 	attysScan.scan();
-	if (attysScan.nAttysDevices < 1) {
+	if (attysScan.getNAttysDevices() < 1) {
 		printf("No devices found.\n");
 		return 0;
 	}
-	attysScan.attysComm[0]->registerCallback(&mysample);
-	attysScan.attysComm[0]->registerMessageCallback(&mymessage);
+	attysScan.getAttysComm(0)->registerCallback(&mysample);
+	attysScan.getAttysComm(0)->registerMessageCallback(&mymessage);
 	// start the data acquisition in the background
-	attysScan.attysComm[0]->start();
+	attysScan.getAttysComm(0)->start();
 	getchar();
-	attysScan.attysComm[0]->quit();
+	attysScan.getAttysComm(0)->quit();
 	return 0;
 }

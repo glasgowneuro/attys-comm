@@ -109,7 +109,7 @@ public:
 	* Gets the Attys name as reported by the bluetooth manager
 	**/
 	char* getAttysName(int i) {
-		return attysName[i];
+		return attysComm[i]->getAttysName();
 	}
 
 	/**
@@ -119,9 +119,9 @@ public:
 		return nAttysDevices;
 	}
 
+private:
 	AttysScanListener* statusCallback = NULL;
 	int nAttysDevices = 0;
-	char** attysName = NULL;
 	AttysComm** attysComm = NULL;
 };
 
