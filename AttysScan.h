@@ -119,7 +119,23 @@ public:
 		return nAttysDevices;
 	}
 
+
 private:
+
+	void sortAttys() {
+		// brute force sort
+		for(int j = 0; j < (nAttysDevices-1); j++) {
+			for(int i = 0; i < (nAttysDevices-1); i++) {
+				if (strcmp(attysComm[i]->getAttysName(),
+					   attysComm[i+1]->getAttysName()) > 0) {
+					AttysComm* ac = attysComm[i];
+					attysComm[i] = attysComm[i+1];
+				attysComm[i+1] = ac;
+				}
+			}
+		}
+	}
+		    
 	AttysScanListener* statusCallback = NULL;
 	int nAttysDevices = 0;
 	AttysComm** attysComm = NULL;
