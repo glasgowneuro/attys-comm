@@ -169,7 +169,7 @@ int AttysScan::scan(int maxAttysDevs) {
 		(nAttysDevices < maxAttysDevs)) {
 		LPSTR name = pwsaResults->lpszServiceInstanceName;
 		if (strstr(name, "GN-ATTYS1") != 0) {
-			_RPT0(0, "Found an Attys!\n");
+			_RPT1(0, "Found an Attys: %s -- connecting",name);
 
 			char tmp[256];
 			sprintf(tmp, "Connecting to\nAttys #%d:\n%s", nAttysDevices, name);
@@ -195,11 +195,12 @@ int AttysScan::scan(int maxAttysDevs) {
 						statusCallback->message(SCAN_CONNECTING, tmp);
 					}
 					attysComm[nAttysDevices]->connect();
-					strcpy(attysName[nAttysDevices], name);
+					attysComm[nAttysDevices]->setAttysName(name);
 					nAttysDevices++;
 					if (statusCallback) {
 						char tmp[256];
 						sprintf(tmp,"Connected to %s.",name);
+						_RPT0(0, "Connected.\n", name);
 						statusCallback->message(SCAN_CONNECTED, tmp);
 					}
 					break;
@@ -211,6 +212,7 @@ int AttysScan::scan(int maxAttysDevs) {
 					attysComm[nAttysDevices]->closeSocket();
 					delete attysComm[nAttysDevices];
 					attysComm[nAttysDevices] = NULL;
+					_RPT0(0, "Connection failed.\n");
 				}
 			}
 		}
