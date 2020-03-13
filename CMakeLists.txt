@@ -5,7 +5,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-project(attyscomm VERSION 2.0.12 LANGUAGES CXX)
+project(attyscomm VERSION 2.0.13 LANGUAGES CXX)
 include(GNUInstallDirs)
 add_subdirectory(test)
 add_subdirectory(examples)
