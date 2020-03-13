@@ -462,6 +462,18 @@ Returns an array of 14 bytes of the bluetooth address.
 returns the MAC address as a string.  
 ";
 
+%feature("docstring") AttysCommBase::getAttysName "
+`getAttysName() -> char *`  
+
+Returns the name of the Attys  
+";
+
+%feature("docstring") AttysCommBase::setAttysName "
+`setAttysName(char *s)`  
+
+Sets the name of the Attys  
+";
+
 %feature("docstring") AttysCommBase::processRawAttysData "
 `processRawAttysData(const char *data)`  
 ";
@@ -554,14 +566,6 @@ Attributes
 
 * `MAX_ATTYS_DEVS` : `const int`  
     Max number of Attys Devices  
-
-* `statusCallback` : `AttysScanListener *`  
-
-* `nAttysDevices` : `int`  
-
-* `attysName` : `char **`  
-
-* `attysComm` : `AttysComm **`  
 
 C++ includes: AttysScan.h
 ";
