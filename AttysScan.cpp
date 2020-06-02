@@ -168,7 +168,7 @@ int AttysScan::scan(int maxAttysDevs) {
 	while ((WSALookupServiceNext(hLookup, LUP_RETURN_NAME | LUP_RETURN_ADDR, &dwSize, pwsaResults) == 0) &&
 		(nAttysDevices < maxAttysDevs)) {
 		LPSTR name = pwsaResults->lpszServiceInstanceName;
-		if (strstr(name, "GN-ATTYS1") != 0) {
+		if (strstr(name, "GN-ATTYS") != 0) {
 			_RPT1(0, "Found an Attys: %s -- connecting",name);
 
 			char tmp[256];
@@ -200,7 +200,7 @@ int AttysScan::scan(int maxAttysDevs) {
 					if (statusCallback) {
 						char tmp[256];
 						sprintf(tmp,"Connected to %s.",name);
-						_RPT0(0, "Connected.\n", name);
+						_RPT0(0, "Connected.\n");
 						statusCallback->message(SCAN_CONNECTED, tmp);
 					}
 					break;

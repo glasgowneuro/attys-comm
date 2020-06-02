@@ -215,14 +215,14 @@ public:
 	static const int ADC_RATE_250HZ = 1;
 
 	/**
-	 * Constant defining sampling rate of 500Hz (experimental).
+	 * Constant defining sampling rate of 500Hz (Attys2 only).
 	 **/
-	static const int ADC_RATE_500Hz = 2;
+	static const int ADC_RATE_500HZ = 2;
 
 	/**
-	 * Constant defining sampling rate of 1000Hz (experimental).
+	 * Constant defining sampling rate of 1000Hz (experimental, Attys2 only).
 	 **/
-	static const int ADC_RATE_1000Hz = 3;
+	static const int ADC_RATE_1000HZ = 3;
 
 	/**
 	 * Constant defining the default sampling rate (250Hz).
@@ -719,6 +719,7 @@ protected:
 	int isCharging = 0;
 	int watchdogCounter = 0;
 	int initialising = 1;
+	int highSpeed = 0;
 	unsigned long sampleNumber = 0;
 	char attysName[256] = "";
 	std::thread* mainThread = NULL;
@@ -776,8 +777,15 @@ protected:
 	void correctSampleNumberAfterTimeout();
 
 	long unsigned int start_time = 0;
+
+private:
+
+	void decodeStandardDataPacket();
+
+	void decodeHighSpeedDatePacket();
+
 public:
-	// these need to be public becaus they are called from objC but
+	// these need to be public because they are called from objC but
 	// should be be touched.
 	
 	void processRawAttysData(const char* data);
