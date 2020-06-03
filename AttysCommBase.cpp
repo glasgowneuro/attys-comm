@@ -216,16 +216,16 @@ void AttysCommBase::decodeStandardDataPacket() {
 
 }
 
-void AttysCommBase::decodeHighSpeedDatePacket() {
+void AttysCommBase::decodeHighSpeedDataPacket() {
 	int nTrans = 0;
 
-	if (strlen(inbuffer) > 10) {
+	if (strlen(inbuffer) == 29) {
 
 		Base64decode(raw, inbuffer);
 
-		sample[INDEX_GPIO0] = (float)((raw[6] & 32) == 0 ? 0 : 1);
-		sample[INDEX_GPIO1] = (float)((raw[6] & 64) == 0 ? 0 : 1);
-		isCharging = ((raw[6] & 0x80) == 0 ? 0 : 1);
+		sample[INDEX_GPIO0] = (float)((raw[12] & 32) == 0 ? 0 : 1);
+		sample[INDEX_GPIO1] = (float)((raw[12] & 64) == 0 ? 0 : 1);
+		isCharging = ((raw[12] & 0x80) == 0 ? 0 : 1);
 
 		// check that the timestamp is the expected one
 		int ts = 0;
@@ -251,17 +251,19 @@ void AttysCommBase::decodeHighSpeedDatePacket() {
 				long v = (raw[s * 6 + i * 3] & 0xff)
 					| ((raw[s * 6 + i * 3 + 1] & 0xff) << 8)
 					| ((raw[s * 6 + i * 3 + 2] & 0xff) << 16);
-				data[INDEX_Analogue_channel_1 + i] = v;
-			}
-
-			for (int i = INDEX_Analogue_channel_1;
-				i <= INDEX_Analogue_channel_2; i++) {
 				float norm = 0x800000;
-				sample[i] = ((float)data[i] - norm) / norm *
-					ADC_REF / ADC_GAIN_FACTOR[adcGainRegister[i
-					- INDEX_Analogue_channel_1]];
+				sample[INDEX_Analogue_channel_1 + i] = ((float)v - norm) / norm *
+					ADC_REF / ADC_GAIN_FACTOR[adcGainRegister[i]];
 			}
 			// _RPT1(0, "%d\n", data[INDEX_Analogue_channel_1]);
+
+			for (int i = 0; i<3; i++) {
+				long v = (raw[14 + i * 2] & 0xff)
+					| ((raw[14 + i * 2 + 1] & 0xff) << 8);
+				float norm = 0x8000;
+				sample[INDEX_Acceleration_X + i] = ((float)v - norm) / norm *
+					getAccelFullScaleRange();
+			}
 
 			// in case a sample has been lost
 			for (int j = 0; j < nTrans; j++) {
@@ -306,7 +308,7 @@ void AttysCommBase::processRawAttysData(const char* recvbuffer) {
 			decodeStandardDataPacket();
 		}
 		else {
-			decodeHighSpeedDatePacket();
+			decodeHighSpeedDataPacket();
 		}
 	
 		lf++;

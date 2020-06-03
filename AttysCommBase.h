@@ -782,7 +782,7 @@ private:
 
 	void decodeStandardDataPacket();
 
-	void decodeHighSpeedDatePacket();
+	void decodeHighSpeedDataPacket();
 
 public:
 	// these need to be public because they are called from objC but
