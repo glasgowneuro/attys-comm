@@ -42,7 +42,7 @@ int main (int,char**) {
 	attysScan.getAttysComm(0)->registerCallback(&mysample);
 	attysScan.getAttysComm(0)->registerMessageCallback(&mymessage);
 	// start the data acquisition in the background
-	attysScan.getAttysComm(0)->setAdc_samplingrate_index(AttysCommBase::ADC_RATE_500HZ);
+	attysScan.getAttysComm(0)->setAdc_samplingrate_index(AttysCommBase::ADC_RATE_250HZ);
 	attysScan.getAttysComm(0)->start();
 	getchar();
 	attysScan.getAttysComm(0)->quit();
