@@ -220,11 +220,6 @@ public:
 	static const int ADC_RATE_500HZ = 2;
 
 	/**
-	 * Constant defining sampling rate of 1000Hz (experimental, Attys2 only).
-	 **/
-	static const int ADC_RATE_1000HZ = 3;
-
-	/**
 	 * Constant defining the default sampling rate (250Hz).
 	 **/
 	static const int ADC_DEFAULT_RATE = ADC_RATE_250HZ;
