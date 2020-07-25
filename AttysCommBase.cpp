@@ -1,6 +1,8 @@
 #include "AttysCommBase.h"
 
 
+const int AttysCommBase::ADC_SAMPLINGRATE[4] = { 125, 250, 500, 1000 };
+
 
 AttysCommBase::AttysCommBase()
 {
@@ -74,8 +76,6 @@ void AttysCommBase::sendSamplingRate() {
 	sprintf(tmp, "r=%d", adc_rate_index);
 	sendSyncCommand(tmp, 1);
 	highSpeed = (adc_rate_index == ADC_RATE_500HZ);
-	sprintf(tmp, "h=%d", highSpeed);
-	sendSyncCommand(tmp, 1);
 }
 
 void AttysCommBase::sendFullscaleAccelRange() {

@@ -230,7 +230,7 @@ public:
 	 * Array of the sampling rates mapping the index
 	 * to the actual sampling rate.
 	 **/
-	const int ADC_SAMPLINGRATE[4] = { 125, 250, 500, 1000 };
+	static const int ADC_SAMPLINGRATE[4];
 
 private:
 	// the actual sampling rate in terms of the sampling rate index
