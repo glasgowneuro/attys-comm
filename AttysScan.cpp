@@ -75,9 +75,9 @@ int AttysScan::scan(int maxAttysDevs) {
 			if (hci_read_remote_name(sock, &(ii + i)->bdaddr, sizeof(name),
 				name, 0) < 0)
 				strcpy(name, "[unknown]");
-			fprintf(stderr, "%s  %s", addr, name);
+			_RPT2(0, "%s  %s", addr, name);
 			if (strstr(name, "GN-ATTYS") != 0) {
-				fprintf(stderr, "! Found one. Connecting. ");
+				_RPT0(0, "! Found one. Connecting. ");
 				memset(&saddr, 0, sizeof(struct sockaddr_rc));
 				// set the connection parameters (who to connect to)
 				saddr.rc_family = AF_BLUETOOTH;
@@ -97,7 +97,6 @@ int AttysScan::scan(int maxAttysDevs) {
 					attysComm[nAttysDevices]->connect();
 					attysComm[nAttysDevices]->setAttysName(name);
 					nAttysDevices++;
-					fprintf(stderr, " Connected.\n");
 					if (statusCallback) {
 						char tmp[256];
 						sprintf(tmp,"Connecting to %s.",name);
@@ -112,11 +111,11 @@ int AttysScan::scan(int maxAttysDevs) {
 					attysComm[nAttysDevices]->closeSocket();
 					delete attysComm[nAttysDevices];
 					attysComm[nAttysDevices] = NULL;
-					fprintf(stderr, " Connection error.\n");
+					_RPT0(0, " Connection error.\n");
 				}
 			}
 			else {
-				fprintf(stderr, "\n");
+				_RPT0(0, "\n");
 			}
 		}
 	}

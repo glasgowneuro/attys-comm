@@ -28,9 +28,11 @@
 #if (defined(NDEBUG) || defined(QT_NO_DEBUG))
 #define _RPT0(u,v)
 #define _RPT1(u,v,w)
+#define _RPT2(u,v,w,x)
 #else
 #define _RPT0(u,v) fprintf(stderr,v)
 #define _RPT1(u,v,w) fprintf(stderr,v,w)
+#define _RPT2(u,v,w,x) fprintf(stderr,v,w,x)
 #endif
 #endif
 
