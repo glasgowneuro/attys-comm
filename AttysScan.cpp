@@ -32,14 +32,14 @@ int AttysScan::scan(int maxAttysDevs) {
 
 	_RPT0(0, "Searching for Attys devices.\n");
 	if (statusCallback) {
-		statusCallback->message(SCAN_SEARCHING, "Searching for\nAttys devices");
+		statusCallback->message(SCAN_SEARCHING, "Searching for Attys devices");
 	}
 
 	dev_id = hci_get_route(NULL);
 	if (dev_id < 0) {
 		_RPT1(0, "No bluetooth devices paired or bluetooth off. Err code = %d\n", dev_id);
 		if (statusCallback) {
-			statusCallback->message(SCAN_NODEV, "No bluetooth\ndevices available");
+			statusCallback->message(SCAN_NODEV, "No devices available");
 		}
 		return dev_id;
 	}
@@ -99,7 +99,7 @@ int AttysScan::scan(int maxAttysDevs) {
 					nAttysDevices++;
 					if (statusCallback) {
 						char tmp[256];
-						sprintf(tmp,"Connecting to %s.",name);
+						sprintf(tmp,"Connected to %s.",name);
 						statusCallback->message(SCAN_CONNECTED, tmp);
 					}
 					break;
@@ -111,7 +111,7 @@ int AttysScan::scan(int maxAttysDevs) {
 					attysComm[nAttysDevices]->closeSocket();
 					delete attysComm[nAttysDevices];
 					attysComm[nAttysDevices] = NULL;
-					_RPT0(0, " Connection error.\n");
+					_RPT1(0, "!Connection error: %s\n",msg);
 				}
 			}
 			else {
