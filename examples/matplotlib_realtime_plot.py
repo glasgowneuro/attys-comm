@@ -12,7 +12,7 @@ import matplotlib.animation as animation
 import pyattyscomm
 
 # read from 2nd Analogue channel
-channel = pyattyscomm.AttysComm.INDEX_Analogue_channel_2
+channel = pyattyscomm.AttysComm.INDEX_Analogue_channel_1
 
 s = pyattyscomm.AttysScan()
 s.scan()

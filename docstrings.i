@@ -156,14 +156,14 @@ Attributes
 * `ADC_RATE_250HZ` : `const int`  
     Constant defining sampling rate of 250Hz.  
 
-* `ADC_RATE_500Hz` : `const int`  
-    Constant defining sampling rate of 500Hz (experimental).  
-
-* `ADC_RATE_1000Hz` : `const int`  
-    Constant defining sampling rate of 1000Hz (experimental).  
+* `ADC_RATE_500HZ` : `const int`  
+    Constant defining sampling rate of 500Hz (Attys2 only).  
 
 * `ADC_DEFAULT_RATE` : `const int`  
     Constant defining the default sampling rate (250Hz).  
+
+* `ADC_SAMPLINGRATE` : `const int`  
+    Array of the sampling rates mapping the index to the actual sampling rate.  
 
 * `ADC_GAIN_6` : `const int`  
     Gain index setting it to gain 6.  
@@ -253,9 +253,6 @@ Attributes
 
 * `CHANNEL_UNITS` : `std::string const`  
     Units of the channels.  
-
-* `ADC_SAMPLINGRATE` : `const int`  
-    Array of the sampling rates mapping the index to the actual sampling rate.  
 
 * `ADC_GAIN_FACTOR` : `const int`  
     Mmapping between index and actual gain.  
