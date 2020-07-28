@@ -45,7 +45,7 @@ elif platform == "darwin":
 
 						   
 setup (name = 'pyattyscomm',
-       version = '2.0.14.2',
+       version = '2.0.14.3',
        author      = "Bernd Porr",
        author_email = "bernd@glasgowneuro.tech",
        url = "https://github.com/glasgowneuro/attys-comm",
