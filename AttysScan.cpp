@@ -90,7 +90,7 @@ int AttysScan::scan(int maxAttysDevs) {
 				}
 				try {
 					if (statusCallback) {
-						char tmp[256];
+						char tmp[512];
 						sprintf(tmp,"Connecting to %s.",name);
 						statusCallback->message(SCAN_CONNECTING, tmp);
 					}
@@ -98,7 +98,7 @@ int AttysScan::scan(int maxAttysDevs) {
 					attysComm[nAttysDevices]->setAttysName(name);
 					nAttysDevices++;
 					if (statusCallback) {
-						char tmp[256];
+						char tmp[512];
 						sprintf(tmp,"Connected to %s.",name);
 						statusCallback->message(SCAN_CONNECTED, tmp);
 					}
