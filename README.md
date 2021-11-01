@@ -10,6 +10,16 @@ The library is cross platform: It's for Linux, Windows and Mac.
 
 ### Linux
 
+There are pre-compiled packages for Ubuntu LTS:
+
+```
+sudo add-apt-repository ppa:berndporr/attys
+sudo apt-get update
+sudo apt-get install attyscomm-dev
+```
+
+or alternatively compile from source:
+
 ```
 cmake .
 make
@@ -24,7 +34,7 @@ one called libattyscomm_static.a.
 Under windows only the static library is generated which
 should be used for your code development.
 ```
-cmake -G "Visual Studio 15 2017 Win64" .
+cmake -G "Visual Studio 16 2019" -A x64 .
 ```
 and then start Visual C++ and compile it.
 
