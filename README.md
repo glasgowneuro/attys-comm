@@ -1,6 +1,6 @@
-# AttysCOMM
+# attys-comm
 
-The C++ & Python API for the Attys bluetooth data acquisition board: http://www.attys.tech
+The C++ API (with Python wrapper) for the Attys bluetooth data acquisition board: http://www.attys.tech
 
 The library is cross platform: It's for Linux, Windows and Mac.
 
@@ -82,7 +82,7 @@ attysScan.getNAttysDevices()
 attysScan.getAttysComm(0)->setAdc_samplingrate_index(AttysComm::ADC_RATE_250HZ);
 ```
 
-5. Register a callback (optional)
+5. Register a callback
 ```
 attysCallback = new AttysCallback(this);
 attysScan.getAttysComm(0)->registerCallback(attysCallback);
@@ -95,22 +95,7 @@ attysScan.getAttysComm(0)->start();
 ```
 If you have registered a callback then it's all set!
 
-If you have no callback registered then you need to retreive the
-samples from the ringbuffer in steps 7.-9.:
-
-7. Check if ringbuffer contains data and wait till true
-```
-attysScan.getAttysComm(n)->hasSampleAvilabale();
-```
-
-8. Get samples from buffer
-```
-float* values = attysScan.getAttysComm(n)->getSampleFromBuffer();
-```
-
-9. go back to 7)
-
-10. Ending the program:
+7. Ending the program:
 ```
 attysScan.getAttysComm(n)->quit();
 ```
