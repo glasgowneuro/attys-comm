@@ -2,11 +2,14 @@
 
 The C++ API (with Python wrapper) for the Attys bluetooth data acquisition board: http://www.attys.tech
 
-The library is cross platform: It's for Linux, Windows and Mac.
+The library is cross platform: It's for Linux and Windows
 
 ![alt tag](ecu_attys_daq_board.png)
 
-## Installation instructions
+Please use the pre-compiled packages in particular for Python via pip (compilation especially under
+Windows is complicated). See the python section.
+
+## C++ Installation instructions
 
 ### Linux
 
@@ -102,6 +105,8 @@ attysScan.getAttysComm(n)->quit();
 
 
 ## Python (SWIG)
+
+Make sure that the C++ library compiles (see above)
 
 This libary is fast and multi threaded. It performs
 the data acquisition in the background while python can then
