@@ -251,7 +251,7 @@ Attributes
 * `CHANNEL_SHORT_DESCRIPTION` : `const std::string`  
     Short descriptions of the channels.  
 
-* `CHANNEL_UNITS` : `std::string const`  
+* `CHANNEL_UNITS` : `const std::string`  
     Units of the channels.  
 
 * `ADC_GAIN_FACTOR` : `const int`  
