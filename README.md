@@ -42,23 +42,6 @@ cmake -G "Visual Studio 16 2019" -A x64 .
 and then start Visual C++ and compile it.
 
 
-### MacOS
-
-For pure commandline install:
-```
-cmake .
-make
-make install
-```
-This will generate: a dynamic library libattyscomm.*dylib and a static
-one called libattyscomm_static.a.
-
-If you want to debug/develop the library in Xcode:
-```
-cmake -G Xcode
-```
-
-
 ## Usage
 
 A small test program is in the `examples` directory which scans
@@ -102,6 +85,9 @@ If you have registered a callback then it's all set!
 ```
 attysScan.getAttysComm(n)->quit();
 ```
+
+The PDF documentation is in the `doc` folder. The online docs
+are here: https://glasgowneuro.github.io/attys-comm/
 
 
 ## Python (SWIG)
@@ -236,6 +222,16 @@ Examples programs are in the `examples` folder and in this
 ![github repo](https://github.com/glasgowneuro/attys-python-examples).
 
 ![alt tag](realtime_plot_screenshot.png)
+
+### Documentation
+
+pyattyscomm has in-built extensive documentation. Just do:
+
+```
+import pyattyscomm
+help(pyattyscomm)
+```
+
 
 
 Enjoy!
