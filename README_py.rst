@@ -4,7 +4,7 @@ Python API for the Attys
 
 Attys is a lightweight wearable bluetooth data acquisition box which can measure anything from temperature to ECG.
 
-It's cross platform and runs under Linux, Windows and macOS.
+It's cross platform and runs under Linux and Windows
 
 It has two 24 bit analogue channels, an accelerometer and a magnetometer.
 
@@ -14,13 +14,10 @@ http://www.attys.tech
 Required packages under Linux
 =============================
 
-For Ubuntu Linux install libbluetooth-dev::
+For Ubuntu Linux install libbluetooth-dev and swig::
 
-      sudo apt-get install libbluetooth-dev
+      sudo apt-get install libbluetooth-dev swig
 
-For other Linux flavours install them from souce:
-
-https://github.com/glasgowneuro/attys-comm
 
 
 Quick start guide
@@ -84,4 +81,4 @@ Demos
 =====
 
 On github are python examples which show you how
-to plot realtime data from the Attys: https://github.com/glasgowneuro/attys-comm/examples
+to plot realtime data from the Attys: https://github.com/glasgowneuro/attys-comm/tree/master/examples

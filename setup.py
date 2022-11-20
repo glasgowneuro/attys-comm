@@ -34,12 +34,12 @@ elif platform == "win32":
 							)
 
 setup (name = 'pyattyscomm',
-       version = '2.1.0',
+       version = '2.1.1',
        author      = "Bernd Porr",
        author_email = "bernd@glasgowneuro.tech",
        url = "https://github.com/glasgowneuro/attys-comm",
        description = 'API for the bluetooth Attys DAQ box (www.attys.tech)',
-       long_description=read('README_py'),
+       long_description=read('README_py.rst'),
        ext_modules = [attyscomm_module],
        py_modules = ["pyattyscomm"],
        license='Apache 2.0',
