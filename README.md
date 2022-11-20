@@ -192,13 +192,11 @@ c.start()
 # sleep here or start a GUI
 
 c.quit()
+```
 
 ### Example programs
 
-Examples programs are in the `examples` folder and in this 
-![github repo](https://github.com/glasgowneuro/attys-python-examples).
-
-![alt tag](realtime_plot_screenshot.png)
+Examples programs are in the `examples` folder.
 
 ### Documentation
 
