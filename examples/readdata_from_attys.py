@@ -2,6 +2,13 @@
 import sys
 sys.path.append('cpp')
 import pyattyscomm
+import numpy as np
+
+class AttysCommCallback(pyattyscomm.SampleCallback):
+    def hasSample(self,t,v):
+        print(t,v)
+
+cb = AttysCommCallback()
 
 print("Searching for Attys")
 s = pyattyscomm.AttysScan()
@@ -10,9 +17,7 @@ c = s.getAttysComm(0)
 if (c == None):
     print("No Attys found")
     quit()
+pyattyscomm.connectCallback(c,cb)
 c.start()
-while True:
-    while (not c.hasSampleAvailable()):
-        pass
-    sample = c.getSampleFromBuffer()
-    print(sample)
+input()
+c.quit()
