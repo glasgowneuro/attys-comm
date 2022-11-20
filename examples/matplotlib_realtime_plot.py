@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Plots channel 7 of the Attys in two different windows. Requires pyqtgraph.
+Plots one channel of the Attys in two different windows. Requires pyqtgraph.
 
 """
 
@@ -14,13 +14,6 @@ import pyattyscomm
 # read from 2nd Analogue channel
 channel = pyattyscomm.AttysComm.INDEX_Analogue_channel_1
 
-s = pyattyscomm.AttysScan()
-s.scan()
-c = s.getAttysComm(0)
-if not c:
-    print("No Attys connected and/or paired")
-    sys.exit()
-c.start()
 
 # now let's plot the data
 fig, ax = plt.subplots()
@@ -41,23 +34,30 @@ def update(data):
     plotbuffer=plotbuffer[-500:]
     # set the new 500 points of channel 9
     line.set_ydata(plotbuffer)
-    dy = (plotbuffer.max() - plotbuffer.min())/10
-    ax.set_ylim(plotbuffer.min() - dy,plotbuffer.max() + dy)
     return line,
 
-# this checks in an endless loop if there is data in the ringbuffer
-# of there is data then emit it to the update funnction above
-def data_gen():
-    #endless loop which gets data
-    while True:
-        data = np.zeros(0)
-        while (c.hasSampleAvailable()):
-            sample = c.getSampleFromBuffer()
-            data = np.append(data,sample[channel])
-        yield data
+
+class AttysCommCallback(pyattyscomm.SampleCallback):
+    def hasSample(self,t,v):
+        global plotbuffer
+        plotbuffer.append(v[channel])
+
+        
+s = pyattyscomm.AttysScan()
+s.scan()
+c = s.getAttysComm(0)
+if not c:
+    print("No Attys connected and/or paired")
+    sys.exit()
+
+    
+cb = AttysCommCallback()
+pyattyscomm.connectCallback(c,cb)
+
+c.start()
 
 # start the animation
-ani = animation.FuncAnimation(fig, update, data_gen, interval=100)
+ani = animation.FuncAnimation(fig, update, interval=100)
 
 # show it
 plt.show()

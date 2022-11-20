@@ -32,20 +32,9 @@ elif platform == "win32":
 							extra_link_args=['Release\\attyscomm_static.lib'],
                                                         swig_opts=['-c++','-py3','-threads'],
 							)
-elif platform == "darwin":
-	attyscomm_module = Extension('_pyattyscomm',
-							sources=['pyattyscomm.i'],
-							extra_compile_args=['-D__APPLE__','-std=c++11'],
-							extra_link_args=[os.getcwd()+'/libattyscomm_static.a',
-                                                                         '-framework','CoreBluetooth',
-                                                                         '-framework','IOBluetooth',
-                                                                         '-framework','Foundation'],
-                                                        swig_opts=['-c++','-py3','-threads'],
-							)
 
-						   
 setup (name = 'pyattyscomm',
-       version = '2.0.15.0',
+       version = '2.0.16.0',
        author      = "Bernd Porr",
        author_email = "bernd@glasgowneuro.tech",
        url = "https://github.com/glasgowneuro/attys-comm",

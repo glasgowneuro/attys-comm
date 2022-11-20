@@ -1,8 +1,6 @@
 %include "docstrings.i"
 %module(directors="1") pyattyscomm
-%feature("director") AttysCommListener;
-%feature("director") AttysCommMessage;
-%feature("director") AttysScanListener;
+%feature("director") SampleCallback;
 %feature("autodoc","3");
 %module pyattyscomm
 %{
@@ -12,6 +10,22 @@
 	#include "attyscomm/base64.h"
 	#include "AttysComm.h"
 	#include "AttysScan.h"
+    #define N_CHANS 10
+%}
+
+%include "std_array.i"
+
+namespace std {
+  %template(FloatArray) array<float,N_CHANS>;
+}
+
+%inline %{
+	class SampleCallback{
+	public:
+	virtual void hasSample(double t,const std::array<float,N_CHANS> &data) = 0;
+	virtual ~SampleCallback() {};
+	SampleCallback() {};
+};
 %}
 
 %typemap(out) sample_p {
@@ -20,29 +34,42 @@
 	  PyErr_SetString(PyExc_ValueError,"Sample array is NULL. There's no data available.");
 	  return NULL;
   }
-  $result = PyList_New(10);
-  for (i = 0; i < 10; i++) {
+  $result = PyList_New(N_CHANS);
+  for (i = 0; i < N_CHANS; i++) {
     PyObject *o = PyFloat_FromDouble((double) $1[i]);
     PyList_SetItem($result,i,o);
   }
 }
 
-/**
-%typemap(in,numinputs=0) sample_p (sample_p temp) {
-	$1 = temp;
-}
-
-
-%typemap(argout) sample_p s {
-  PyObject* list = PyList_New(10);
-  for (size_t i = 0; i < 10; ++i) {
-	  PyList_SetItem(list, i, PyFloat_FromDouble((float)(temp$argnum[i])));
-  }
-  $result = list;
-}
-**/
-
 %include "AttysCommBase.h"
 %include "attyscomm/base64.h"
 %include "AttysComm.h"
 %include "AttysScan.h"
+
+
+%inline %{
+struct MyAttysCommListener : AttysCommListener {
+	SampleCallback* callback = NULL;
+	virtual void hasSample(double t, sample_p sample) {
+		if (callback) {
+			std::array<float,N_CHANS> data;
+			for(int i = 0; i < N_CHANS; i++) {
+				data[i] = sample[i];
+			}
+			callback->hasSample(t,data);
+		}
+	}
+};
+
+MyAttysCommListener myAttysCommListener;
+
+void connectCallback(AttysCommBase& attysCommBase, SampleCallback* cb) {
+	myAttysCommListener.callback = cb;
+	attysCommBase.registerCallback(&myAttysCommListener);
+}
+
+void disConnectCallback(AttysCommBase& attysCommBase) {
+	myAttysCommListener.callback = NULL;
+	attysCommBase.unregisterCallback();
+}	
+%}
