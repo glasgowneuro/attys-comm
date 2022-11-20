@@ -40,24 +40,24 @@ Here are the basic steps how to use the API::
       # get the 1st Attys
       c = s.getAttysComm(0)
 
-      # if an attys has been found c points to it. Otherwise it's None.
+      # create a datacallback
+      class AttysCommCallback(pyattyscomm.SampleCallback):
+        def hasSample(self,t,v):
+          print(t,v) # so more than just printing!
+
+      cb = AttysCommCallback()
+
+      pyattyscomm.connectCallback(c,cb)
 
       # Start data acquisition in the background
       c.start()
 
-      # Now we just read data at our convenience in a loop or timer or thread
-      # if data is available you can read it from the ringBuffer
+      # sleep here or start a GUI
 
-      while (not c.hasSampleAvilabale()):
-      	    # do something else or nothing
+      # end the acqu
+      c.quit()
 
-      # getting a sample (array of all Attys channels)
-      sample = c.getSampleFromBuffer()
 
-      # do something with the sample
-      print(sample)
-
-      # rinse and repeat!
 
 
 API documentation
@@ -84,6 +84,4 @@ Demos
 =====
 
 On github are python examples which show you how
-to plot realtime data from the Attys:
-
-https://github.com/glasgowneuro/attys-python-examples
+to plot realtime data from the Attys: https://github.com/glasgowneuro/attys-comm/examples

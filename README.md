@@ -116,7 +116,7 @@ pip3 install pyattyscomm
 
 #### From source
 
-You need to have swig-3.x installed. Then run:
+You need to have swig-4.x installed. Then run:
 
 ```
 cmake .
@@ -155,29 +155,6 @@ python setup.py install
 ```
 
 
-### MacOS
-
-#### Python package (pip):
-
-```
-pip3 install pyattyscomm
-```
-
-#### From source
-
-You need to have swig-3.x installed for homebrew. Then run:
-
-```
-cmake .
-make
-make install
-./setup.py install
-```
-
-and then you can load the module `pyattyscomm` system-wide!
-
-
-
 
 ### How to use
 
@@ -198,23 +175,23 @@ s.scan()
 
 # get the 1st Attys
 c = s.getAttysComm(0)
-
 # if an attys has been found c points to it. Otherwise it's None.
+
+# create a datacallback
+class AttysCommCallback(pyattyscomm.SampleCallback):
+    def hasSample(self,t,v):
+        print(t,v) # so more than just printing!
+
+cb = AttysCommCallback()
+
+pyattyscomm.connectCallback(c,cb)
 
 # Start data acquisition in the background
 c.start()
 
-# Now we just read data at our convenience in a loop or timer or thread
+# sleep here or start a GUI
 
-while (not c.hasSampleAvilabale()):
-        # do something else or nothing
-	a = a + 1
-    # getting a sample
-    sample = c.getSampleFromBuffer()
-
-    # do something with the sample
-    print(sample)
-```
+c.quit()
 
 ### Example programs
 
