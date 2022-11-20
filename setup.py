@@ -22,7 +22,7 @@ if platform == "linux" or platform == "linux2":
                                                         ],
 							extra_compile_args=['-std=c++11'],
 							libraries=['bluetooth'],
-                                                        swig_opts=['-c++','-py3','-threads'],
+                                                        swig_opts=['-c++','-threads'],
 							)
 elif platform == "win32":
 	attyscomm_module = Extension('_pyattyscomm',
@@ -30,7 +30,7 @@ elif platform == "win32":
 							extra_compile_args=['/DWIN32_LEAN_AND_MEAN'],
                                                         libraries=['ws2_32'],
 							extra_link_args=['Release\\attyscomm_static.lib'],
-                                                        swig_opts=['-c++','-py3','-threads'],
+                                                        swig_opts=['-c++','-threads'],
 							)
 
 setup (name = 'pyattyscomm',

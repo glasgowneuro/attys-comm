@@ -10,6 +10,7 @@
 	#include "attyscomm/base64.h"
 	#include "AttysComm.h"
 	#include "AttysScan.h"
+	#include <array>
     #define N_CHANS 10
 %}
 
