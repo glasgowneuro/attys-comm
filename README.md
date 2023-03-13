@@ -111,7 +111,7 @@ sudo apt-get install libbluetooth-dev
 and then install with:
 
 ```
-pip3 install pyattyscomm
+pip install pyattyscomm
 ```
 
 #### From source
